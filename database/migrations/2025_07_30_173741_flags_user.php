@@ -6,12 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        //
+
         Schema::create('flag_user', function (Blueprint $table) {
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('flag_id')->constrained()->onDelete('cascade');
@@ -19,12 +16,8 @@ return new class extends Migration
             $table->primary(['user_id', 'flag_id']);
         });
     }
-
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('flag_user');
     }
 };

@@ -48,6 +48,9 @@ Route::prefix('/v1')->group(function () {
             'destroy' => 'account.profile.destroy',
         ])->middlewareFor(['store'], 'flags:ACCOUNT_TASK_LEVEL_2');
 
+        Route::post('/address/create', [AddressController::class, 'create'])
+            ->name('account.address.create')
+            ->middleware('flags:ACCOUNT_TASK_LEVEL_3');
         Route::resource('address', AddressController::class, [
             'index',
             'show',
@@ -60,7 +63,7 @@ Route::prefix('/v1')->group(function () {
             'store' => 'account.address.store',
             'update' => 'account.address.update',
             'destroy' => 'account.address.destroy',
-        ]);
+        ])->parameters(['address' => 'addressId']);
     });
 
     Route::prefix('/app')->group(function () {});
