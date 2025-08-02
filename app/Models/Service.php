@@ -5,18 +5,26 @@ namespace App\Models;
 use App\Traits\HasSnowflakeId;
 use Illuminate\Database\Eloquent\Model;
 
-class Profile extends Model
+class Service extends Model
 {
+    //
     use HasSnowflakeId;
 
     public $incrementing = false;
     protected $fillable = [
         'name',
-        'bio',
-        'avatar',
-        'phone',
+        'description',
+        'price',
+        'min_price',
+        'max_price',
+        'address_id',
         'user_id'
     ];
+
+    public function address()
+    {
+        return $this->belongsTo(Address::class);
+    }
 
     public function user()
     {

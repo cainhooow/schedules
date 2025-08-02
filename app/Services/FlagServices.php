@@ -1,10 +1,11 @@
 <?php
 
 namespace App\Services;
+
 use App\Models\User;
 use App\Repositories\FlagRepository;
 
-class FlagService
+class FlagServices
 {
     public function __construct(protected $repository = new FlagRepository()) {}
 

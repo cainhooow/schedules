@@ -10,12 +10,12 @@ use App\Repositories\AddressRepository;
 use Exception;
 use Illuminate\Support\Facades\DB;
 
-class AddressService
+class AddressServices
 {
     public function __construct(
         protected $repository = new AddressRepository(),
-        protected $flagsService = new FlagService(),
-        protected $userService = new UserService(),
+        protected $flagsService = new FlagServices(),
+        protected $userService = new UserServices(),
     ) {}
 
     public function getById(int $id)
@@ -43,13 +43,13 @@ class AddressService
         }
     }
 
-    public function store(array $data)
+    public function store(array $data): Address
     {
         unset($data['default']);
         return $this->repository->store($data);
     }
 
-    public function update(Address $address, array $data)
+    public function update(Address $address, array $data): bool|int
     {
         $defaultAddress = $address->user->addresses()->where('default', true)->first();
 
@@ -69,7 +69,7 @@ class AddressService
         );
     }
 
-    public function delete(User $user, int $addressId)
+    public function delete(User $user, int $addressId): bool|null
     {
         if ($user->addresses()->count() > 1) {
             return $this->repository->delete($addressId);
@@ -88,5 +88,10 @@ class AddressService
             DB::rollBack();
             throw $e;
         }
+    }
+
+    public function hasDefault(User $user): Address|null
+    {
+        return $this->repository->hasDefault($user->id);
     }
 }

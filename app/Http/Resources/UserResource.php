@@ -15,8 +15,8 @@ class UserResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        Log::info(json_encode($this));
         return [
+            'id' => $this->id,
             'name' => $this->username,
             'email' => $this->email,
             'profile' => $this->profile ? new ProfileResource($this->profile) : null,

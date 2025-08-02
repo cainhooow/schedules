@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Constants\JWTSessionConstant;
+use App\Constants\JwtSessionConstant;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -12,7 +12,7 @@ use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
-class JWTAuthenticate
+class JwtAuthenticate
 {
     /**
      * Handle an incoming request.
@@ -22,7 +22,7 @@ class JWTAuthenticate
     public function handle(Request $request, Closure $next): Response
     {
 
-        if (!$token = $request->cookie(JWTSessionConstant::SESSION_NAME)) {
+        if (!$token = $request->cookie(JwtSessionConstant::SESSION_NAME)) {
             return response()->json(['error' => 'token_absent'], Response::HTTP_BAD_REQUEST);
         }
 

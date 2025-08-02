@@ -6,13 +6,13 @@ use App\Exceptions\InvalidAddressException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AddressRequest;
 use App\Http\Resources\AddressResource;
-use App\Services\AddressService;
+use App\Services\AddressServices;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class AddressController extends Controller
 {
-    public function __construct(protected $service = new AddressService()) {}
+    public function __construct(protected $service = new AddressServices()) {}
 
     public function index()
     {

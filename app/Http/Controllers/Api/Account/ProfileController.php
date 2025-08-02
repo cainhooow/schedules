@@ -5,13 +5,13 @@ namespace App\Http\Controllers\Api\Account;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProfileRequest;
 use App\Http\Resources\ProfileResource;
-use App\Services\ProfileService;
+use App\Services\ProfileServices;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class ProfileControler extends Controller
+class ProfileController extends Controller
 {
-    public function __construct(protected $service = new ProfileService()) {}
+    public function __construct(protected $service = new ProfileServices()) {}
     //
     public function index()
     {
@@ -41,6 +41,6 @@ class ProfileControler extends Controller
             $this->service->getById(Auth::user()->profile->id)
         );
     }
-    
+
     public function destroy() {}
 }

@@ -7,9 +7,9 @@ use App\Repositories\ProfileRepository;
 use Exception;
 use Illuminate\Support\Facades\DB;
 
-class ProfileService
+class ProfileServices
 {
-    public function __construct(protected $repository = new ProfileRepository(), protected $service = new FlagService()) {}
+    public function __construct(protected $repository = new ProfileRepository(), protected $service = new FlagServices()) {}
 
     public function getById(int $id)
     {

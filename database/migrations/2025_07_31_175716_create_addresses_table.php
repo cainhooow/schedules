@@ -10,7 +10,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('addresses', function (Blueprint $table) {
-            $table->id();
+            $table->unsignedBigInteger('id')->primary();
             $table->boolean('default')->default(false);
             $table->string('state');
             $table->string('city');
@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('street')->nullable();
             $table->string('neighborhood')->nullable();
             $table->string('number')->nullable();
-            $table->foreignIdFor(User::class);
+            $table->foreignIdFor(User::class)->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

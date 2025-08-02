@@ -9,8 +9,8 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
-use App\Services\FlagService;
-use App\Services\UserService;
+use App\Services\FlagServices;
+use App\Services\UserServices;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,7 +19,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
-    public function __construct(protected $service = new UserService(), protected $flagsService = new FlagService()) {}
+    public function __construct(protected $service = new UserServices(), protected $flagsService = new FlagServices()) {}
 
     public function user()
     {

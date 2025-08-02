@@ -6,12 +6,12 @@ use App\Constants\FlagConstant;
 use App\Models\User;
 use App\Repositories\UserRepository;
 
-class UserService
+class UserServices
 {
     private $flagService;
     public function __construct(protected $repository = new UserRepository())
     {
-        $this->flagService = new FlagService();
+        $this->flagService = new FlagServices();
     }
 
     public function getById(int $id): ?User

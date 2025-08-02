@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Repositories\CommitmentRepository;
 
-class CommitmentService
+class CommitmentServices
 {
     public function __construct(
         protected CommitmentRepository $repository
