@@ -10,7 +10,7 @@ class FlagServices
     public function __construct(protected $repository = new FlagRepository()) {}
 
     /**
-     * @param \App\Constants\FlagConstant[] $flags
+     * @param \App\Constants\Flags[] $flags
      */
     public function assignToUser(User $user, array $flags)
     {
@@ -19,7 +19,7 @@ class FlagServices
     }
 
     /**
-     * @param \App\Constants\FlagConstant[] $flags
+     * @param \App\Constants\Flags[] $flags
      */
     public function removeFromUser(User $user, array $flags)
     {
@@ -28,7 +28,7 @@ class FlagServices
     }
 
     /**
-     * @param \App\Constants\FlagConstant $flag
+     * @param \App\Constants\Flags $flag
      */
     public function userHas(User $user, string $flag)
     {
@@ -36,7 +36,7 @@ class FlagServices
     }
 
     /**
-     * @param \App\Constants\FlagConstant[] $flags
+     * @param \App\Constants\Flags[] $flags
      */
     public function selectIdsByName(array $flags)
     {

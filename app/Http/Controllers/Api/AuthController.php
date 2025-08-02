@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Constants\FlagConstant;
+use App\Constants\Flags;
 use App\Helpers\CookieHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
@@ -39,7 +39,7 @@ class AuthController extends Controller
             }
 
             $user = User::where('email', $data['email'])->first();
-            if (!$this->flagsService->userHas($user, FlagConstant::CAN_AUTHENTICATE)) {
+            if (!$this->flagsService->userHas($user, Flags::CAN_AUTHENTICATE)) {
                 return response()->json([
                     'message' => 'Você não possui permissão para utilizar esse recurso'
                 ], Response::HTTP_UNAUTHORIZED);

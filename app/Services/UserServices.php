@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Constants\FlagConstant;
+use App\Constants\Flags;
 use App\Models\User;
 use App\Repositories\UserRepository;
 
@@ -23,8 +23,8 @@ class UserServices
     {
         $user = $this->repository->store($data);
         $this->flagService->assignToUser($user, [
-            FlagConstant::CAN_AUTHENTICATE,
-            FlagConstant::ACCOUNT_TASK_LEVEL_1
+            Flags::CAN_AUTHENTICATE,
+            Flags::ACCOUNT_TASK_LEVEL_1
         ]);
 
         return $user;

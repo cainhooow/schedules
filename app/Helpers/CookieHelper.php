@@ -2,7 +2,7 @@
 
 namespace App\Helpers;
 
-use App\Constants\JwtSessionConstant;
+use App\Constants\JwtSessions;
 use Illuminate\Support\Facades\Cookie;
 
 class CookieHelper
@@ -13,7 +13,7 @@ class CookieHelper
         $tokens[] = [];
 
         $tokens['token'] = cookie(
-            JwtSessionConstant::SESSION_NAME,
+            JwtSessions::SESSION_NAME,
             $token,
             $tokenTime,
             "/",
@@ -25,7 +25,7 @@ class CookieHelper
         );
 
         $tokens['refreshToken'] = cookie(
-            JwtSessionConstant::SESSION_REFRESH_NAME,
+            JwtSessions::SESSION_REFRESH_NAME,
             $refreshToken,
             $refreshTokenTime,
             "/",
@@ -41,7 +41,7 @@ class CookieHelper
 
     public static function forget()
     {
-        Cookie::forget(JwtSessionConstant::SESSION_NAME);
-        Cookie::forget(JwtSessionConstant::SESSION_REFRESH_NAME);
+        Cookie::forget(JwtSessions::SESSION_NAME);
+        Cookie::forget(JwtSessions::SESSION_REFRESH_NAME);
     }
 }

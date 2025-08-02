@@ -2,7 +2,7 @@
 
 namespace App\Constants;
 
-class FlagConstant
+class Flags
 {
     public const CUSTOMER = 'CUSTOMER';
     public const SERVICE_PROVIDER = 'SERVICE_PROVIDER';

@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Constants\FlagConstant;
+use App\Constants\Flags;
 use App\Exceptions\InvalidAddressException;
 use App\Models\Address;
 use App\Models\User;
@@ -32,8 +32,8 @@ class AddressServices
             DB::beginTransaction();
             $data = $this->repository->store($data);
 
-            $this->flagsService->removeFromUser($data->user, [FlagConstant::ACCOUNT_TASK_LEVEL_3]);
-            $this->flagsService->assignToUser($data->user, [FlagConstant::ACCOUNT_COMPLETED_TASKS]);
+            $this->flagsService->removeFromUser($data->user, [Flags::ACCOUNT_TASK_LEVEL_3]);
+            $this->flagsService->assignToUser($data->user, [Flags::ACCOUNT_COMPLETED_TASKS]);
 
             DB::commit();
             return $data;
@@ -78,8 +78,8 @@ class AddressServices
         try {
             DB::beginTransaction();
 
-            $this->flagsService->assignToUser($user, [FlagConstant::ACCOUNT_TASK_LEVEL_3]);
-            $this->flagsService->removeFromUser($user, [FlagConstant::ACCOUNT_COMPLETED_TASKS]);
+            $this->flagsService->assignToUser($user, [Flags::ACCOUNT_TASK_LEVEL_3]);
+            $this->flagsService->removeFromUser($user, [Flags::ACCOUNT_COMPLETED_TASKS]);
 
             DB::commit();
 

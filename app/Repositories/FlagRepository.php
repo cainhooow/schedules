@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Constants\FlagConstant;
+use App\Constants\Flags;
 use App\Interfaces\FlagInterface;
 use App\Models\Flag;
 

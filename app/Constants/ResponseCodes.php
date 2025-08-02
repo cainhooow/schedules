@@ -2,7 +2,7 @@
 
 namespace App\Constants;
 
-class ResponseCodeConstant
+class ResponseCodes
 {
     public const INVALID_CREDENTIALS = 1000;
     public const TOKEN_ABSENT = 1001;
