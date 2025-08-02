@@ -4,7 +4,7 @@ use App\Http\Controllers\Api\Account\AccountController;
 use App\Http\Controllers\Api\Account\AddressController;
 use App\Http\Controllers\Api\Account\ProfileController;
 use App\Http\Controllers\Api\Account\Services\UserServiceController;
-use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Middleware\JwtAuthenticate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;

@@ -6,6 +6,36 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @OA\Schema(
+ *     schema="RegisterRequest",
+ *     title="Request-Body Registro",
+ *     type="object",
+ *     required={"username", "email", "password"},
+ *     @OA\Property(
+ *         property="username",
+ *         type="string",
+ *         pattern="^[a-z][a-z0-9]*(?:[._][a-z0-9]+)*$",
+ *         example="usuario123",
+ *         description="Nome de usuário único, começando com letra minúscula, pode conter números, '.' e '_'"
+ *     ),
+ *     @OA\Property(
+ *         property="email",
+ *         type="string",
+ *         format="email",
+ *         example="usuario@example.com",
+ *         description="Endereço de email único e válido"
+ *     ),
+ *     @OA\Property(
+ *         property="password",
+ *         type="string",
+ *         minLength=6,
+ *         format="password",
+ *         example="senhaSegura123",
+ *         description="Senha com no mínimo 6 caracteres"
+ *     )
+ * )
+ */
 class RegisterRequest extends FormRequest
 {
     /**

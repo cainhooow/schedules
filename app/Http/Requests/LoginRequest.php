@@ -6,6 +6,29 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @OA\Schema(
+ *     schema="LoginRequest",
+ *     title="Request-Body Login",
+ *     type="object",
+ *     required={"email", "password"},
+ *     @OA\Property(
+ *         property="email",
+ *         type="string",
+ *         format="email",
+ *         example="usuario@example.com",
+ *         description="Endereço de e-mail válido cadastrado"
+ *     ),
+ *     @OA\Property(
+ *         property="password",
+ *         type="string",
+ *         format="password",
+ *         minLength=6,
+ *         example="senhaSegura123",
+ *         description="Senha com no mínimo 6 caracteres"
+ *     )
+ * )
+ */
 class LoginRequest extends FormRequest
 {
     /**

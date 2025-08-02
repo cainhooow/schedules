@@ -23,7 +23,7 @@ class EnsureUserHasFlags
                 return response()->json([
                     'message' => 'Você não tem permissão para acessar este recurso',
                     'missing' => $flag
-                ], Response::HTTP_FORBIDDEN);
+                ], Response::HTTP_UNAUTHORIZED);
             }
         }
 

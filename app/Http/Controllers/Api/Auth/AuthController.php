@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Auth;
 
 use App\Constants\Flags;
 use App\Helpers\CookieHelper;
@@ -20,13 +20,45 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 class AuthController extends Controller
 {
     public function __construct(protected $service = new UserServices(), protected $flagsService = new FlagServices()) {}
-
+    /**
+     * @OA\Get(
+     *     path="/api/v1/me",
+     *     tags={"Autenticação"},
+     *     summary="Usuário autenticado",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Retorna o usuário autenticado atualmente(Cookie/Authorization)",
+     *         @OA\JsonContent(ref="#/components/schemas/UserResponse"),
+     *     ),
+     *     @OA\Response(response=403, description="O User-Access Token não esta presente no request header ou cookie"),
+     *     @OA\Response(response=401, description="O usuário não esta com uma conta logada")
+     * )
+     */
     public function user()
     {
         $user = $this->service->getById(Auth::user()->id);
         return new UserResource($user);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/v1/auth/login",
+     *     summary="Autenticar um usuário",
+     *     tags={"Autenticação"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/LoginRequest")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Login de usuario feito com succeso",
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Erros de validação",
+     *     )
+     * )
+     */
     public function login(LoginRequest $request)
     {
         $data = $request->validated();
@@ -54,10 +86,9 @@ class AuthController extends Controller
                 60 * 24 * 7
             );
 
-            return response()->json([
-                'user' => $user,
-                'token' => $accessToken
-            ])
+            return $user->toResource(UserResource::class)
+                ->additional(['token' => $accessToken])
+                ->response()
                 ->withCookie($cookies['token'])
                 ->withCookie($cookies['refreshToken']);
         } catch (JWTException $e) {
@@ -67,16 +98,34 @@ class AuthController extends Controller
         }
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/v1/register",
+     *     summary="Registrar novo usuário",
+     *     tags={"Autenticação"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/RegisterRequest")
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Usuário registrado com sucesso"
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Erros de validação"
+     *     )
+     * )
+     */
     public function register(RegisterRequest $request)
     {
         $data = $request->validated();
         $data['password'] = Hash::make($data['password']);
-        $user = $this->service->store($data);
 
+        $user = $this->service->store($data);
         $token = JWTAuth::fromUser($user);
 
-        return response()->json([
-            compact('user', 'token')
-        ], Response::HTTP_CREATED);
+        return $user->toResource(UserResource::class)
+            ->additional(['token' => $token]);
     }
 }

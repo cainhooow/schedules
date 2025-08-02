@@ -42,7 +42,7 @@ class AddressController extends Controller
         $data = $request->validated();
         $address = $this->service->getById($address);
 
-        if ($address->user->id !== Auth::user()->id) {
+        if (Auth::user()->id !== $address->user->id) {
             return response()->json([
                 'error' => true,
                 'message' => 'Você não possui permissão para este recurso'

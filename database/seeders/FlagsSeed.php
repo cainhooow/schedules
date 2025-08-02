@@ -4,9 +4,7 @@ namespace Database\Seeders;
 
 use App\Constants\Flags;
 use App\Models\Flag;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class FlagsSeed extends Seeder
 {

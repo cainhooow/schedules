@@ -1,0 +1,367 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Schedules Documentation API interface",
+        "description": "Schedules API Interface",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/v1/me": {
+            "get": {
+                "tags": [
+                    "Autenticação"
+                ],
+                "summary": "Usuário autenticado",
+                "operationId": "20cb56b105e60774b2ee529fa3d8737a",
+                "responses": {
+                    "200": {
+                        "description": "Retorna o usuário autenticado atualmente(Cookie/Authorization)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserResponse"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "O User-Access Token não esta presente no request header ou cookie"
+                    },
+                    "401": {
+                        "description": "O usuário não esta com uma conta logada"
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/login": {
+            "post": {
+                "tags": [
+                    "Autenticação"
+                ],
+                "summary": "Autenticar um usuário",
+                "operationId": "97d0fa1f733dead1980e640104204374",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login de usuario feito com succeso"
+                    },
+                    "400": {
+                        "description": "Erros de validação"
+                    }
+                }
+            }
+        },
+        "/api/v1/register": {
+            "post": {
+                "tags": [
+                    "Autenticação"
+                ],
+                "summary": "Registrar novo usuário",
+                "operationId": "6a59abd9cd73a27f95e6d2936c7f6fcf",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RegisterRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Usuário registrado com sucesso"
+                    },
+                    "400": {
+                        "description": "Erros de validação"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "LoginRequest": {
+                "title": "Request-Body Login",
+                "required": [
+                    "email",
+                    "password"
+                ],
+                "properties": {
+                    "email": {
+                        "description": "Endereço de e-mail válido cadastrado",
+                        "type": "string",
+                        "format": "email",
+                        "example": "usuario@example.com"
+                    },
+                    "password": {
+                        "description": "Senha com no mínimo 6 caracteres",
+                        "type": "string",
+                        "format": "password",
+                        "minLength": 6,
+                        "example": "senhaSegura123"
+                    }
+                },
+                "type": "object"
+            },
+            "RegisterRequest": {
+                "title": "Request-Body Registro",
+                "required": [
+                    "username",
+                    "email",
+                    "password"
+                ],
+                "properties": {
+                    "username": {
+                        "description": "Nome de usuário único, começando com letra minúscula, pode conter números, '.' e '_'",
+                        "type": "string",
+                        "pattern": "^[a-z][a-z0-9]*(?:[._][a-z0-9]+)*$",
+                        "example": "usuario123"
+                    },
+                    "email": {
+                        "description": "Endereço de email único e válido",
+                        "type": "string",
+                        "format": "email",
+                        "example": "usuario@example.com"
+                    },
+                    "password": {
+                        "description": "Senha com no mínimo 6 caracteres",
+                        "type": "string",
+                        "format": "password",
+                        "minLength": 6,
+                        "example": "senhaSegura123"
+                    }
+                },
+                "type": "object"
+            },
+            "AddressResponse": {
+                "title": "Response-Body Endereço de usuário",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "address": {
+                        "type": "string",
+                        "example": "Rua das Flores, 123"
+                    },
+                    "state": {
+                        "type": "string",
+                        "example": "SP"
+                    },
+                    "city": {
+                        "type": "string",
+                        "example": "São Paulo"
+                    },
+                    "street": {
+                        "type": "string",
+                        "example": "Rua das Flores"
+                    },
+                    "neighborhood": {
+                        "type": "string",
+                        "example": "Jardim das Rosas"
+                    },
+                    "number": {
+                        "type": "string",
+                        "example": "123A"
+                    },
+                    "default": {
+                        "type": "boolean",
+                        "example": true
+                    }
+                },
+                "type": "object"
+            },
+            "ProfileResponse": {
+                "title": "Response-Body Perfil de usuário",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 123
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Caio Augusto"
+                    },
+                    "bio": {
+                        "type": "string",
+                        "example": "Desenvolvedor backend e entusiasta de tecnologia."
+                    },
+                    "phone": {
+                        "type": "string",
+                        "example": "+55 11 00000-5678"
+                    },
+                    "avatar": {
+                        "type": "string",
+                        "format": "uri",
+                        "example": "https://cdn.exemplo.com/avatars/123.jpg"
+                    }
+                },
+                "type": "object"
+            },
+            "ServiceResponse": {
+                "title": "Response-Body Serviço",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 10
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Corte Masculino"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Serviço de corte de cabelo para homens."
+                    },
+                    "prices": {
+                        "properties": {
+                            "price": {
+                                "type": "number",
+                                "format": "float",
+                                "example": 50
+                            },
+                            "max": {
+                                "type": "number",
+                                "format": "float",
+                                "example": 70
+                            },
+                            "min": {
+                                "type": "number",
+                                "format": "float",
+                                "example": 30
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "provider": {
+                        "properties": {
+                            "id": {
+                                "type": "integer",
+                                "example": 7
+                            },
+                            "name": {
+                                "type": "string",
+                                "example": "Carlos Ferreira"
+                            },
+                            "username": {
+                                "type": "string",
+                                "example": "carlos_ferreira"
+                            },
+                            "bio": {
+                                "type": "string",
+                                "example": "Barbeiro profissional desde 2010."
+                            },
+                            "avatar": {
+                                "type": "string",
+                                "format": "uri",
+                                "example": "https://cdn.exemplo.com/avatar.jpg"
+                            },
+                            "phone": {
+                                "type": "string",
+                                "example": "+55 11 91234-5678"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "address": {
+                        "properties": {
+                            "id": {
+                                "type": "integer",
+                                "example": 3
+                            },
+                            "state": {
+                                "type": "string",
+                                "example": "SP"
+                            },
+                            "city": {
+                                "type": "string",
+                                "example": "São Paulo"
+                            },
+                            "street": {
+                                "type": "string",
+                                "example": "Rua das Palmeiras"
+                            },
+                            "neighborhood": {
+                                "type": "string",
+                                "example": "Bela Vista"
+                            },
+                            "number": {
+                                "type": "string",
+                                "example": "101"
+                            },
+                            "address": {
+                                "type": "string",
+                                "example": "Rua das Palmeiras, 101 - Bela Vista, São Paulo - SP"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-08-02T15:00:00Z"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-07-30T08:30:00Z"
+                    }
+                },
+                "type": "object"
+            },
+            "UserResponse": {
+                "title": "Response-Body Usuário",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "KairosDev"
+                    },
+                    "email": {
+                        "type": "string",
+                        "example": "kairos@example.com"
+                    },
+                    "profile": {
+                        "$ref": "#/components/schemas/ProfileResponse"
+                    },
+                    "flags": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-08-02T15:03:01Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-08-02T15:03:01Z"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Autenticação",
+            "description": "Autenticação"
+        }
+    ]
+}

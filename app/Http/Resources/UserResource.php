@@ -4,8 +4,28 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Log;
 
+/**
+ * @OA\Schema(
+ *     schema="UserResponse",
+ *     type="object",
+ *     title="Response-Body Usuário",
+ *     @OA\Property(property="id", type="integer", example=1),
+ *     @OA\Property(property="name", type="string", example="KairosDev"),
+ *     @OA\Property(property="email", type="string", example="kairos@example.com"),
+ *     @OA\Property(
+ *         property="profile",
+ *         ref="#/components/schemas/ProfileResponse"
+ *     ),
+ *     @OA\Property(
+ *         property="flags",
+ *         type="array",
+ *         @OA\Items(type="string")
+ *     ),
+ *     @OA\Property(property="created_at", type="string", format="date-time", example="2025-08-02T15:03:01Z"),
+ *     @OA\Property(property="updated_at", type="string", format="date-time", example="2025-08-02T15:03:01Z")
+ * )
+ */
 class UserResource extends JsonResource
 {
     /**
