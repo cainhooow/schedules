@@ -1,61 +1,87 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🗓️ Schedules
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+**Schedules** é um sistema backend desenvolvido em **PHP (Laravel 12.x)** para agendamento de serviços gerais, como barbeiros, tatuadores e outros profissionais. Ele oferece um sistema robusto de permissões baseado em **flags dinâmicas**, com um fluxo de cadastro dividido em etapas e integração com ferramentas externas como o Google Calendar.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🚀 Visão Geral
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+O sistema permite que usuários se cadastrem como:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+-   **CUSTOMER** – usuários que contratam serviços
+-   **SERVICE_PROVIDER** – usuários que oferecem serviços
 
-## Learning Laravel
+Essa definição é feita por meio de um sistema de **flags**, que são atribuídas progressivamente conforme o usuário avança nas etapas do cadastro.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+---
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## 🔐 Sistema de Tarefas por Flags
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+O processo de cadastro é dividido em **três níveis de tarefa**, cada um associado a uma flag específica. Essas flags também controlam o acesso a funcionalidades do sistema.
 
-## Laravel Sponsors
+### ✅ `ACCOUNT_TASK_LEVEL_1` – Definir tipo de conta
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+-   O usuário escolhe se será um `CUSTOMER` ou `SERVICE_PROVIDER`.
+-   Flags atribuídas:
+    -   `CUSTOMER` → recebe `CAN_CONTRACT_SERVICES`
+    -   `SERVICE_PROVIDER` → recebe `CAN_CREATE_SERVICES` e `CAN_UPDATE_SERVICES`
 
-### Premium Partners
+### ✅ `ACCOUNT_TASK_LEVEL_2` – Criação do perfil
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+-   O usuário preenche dados como nome público, nome do negócio (caso prestador), biografia e avatar.
+-   Ao concluir, recebe automaticamente a flag `ACCOUNT_TASK_LEVEL_3`.
 
-## Contributing
+### ✅ `ACCOUNT_TASK_LEVEL_3` – Definir endereço padrão
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+-   O usuário informa pelo menos um endereço. Isso permitirá futuramente a recomendação de serviços com base em localização (cidade/estado).
 
-## Code of Conduct
+Ao concluir todas as etapas, o usuário recebe a flag final: `ACCOUNT_COMPLETED_TASKS`.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+## 🏷️ Sistema de Flags
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+As flags são utilizadas amplamente no sistema para:
 
-## License
+-   Identificar o tipo de conta
+-   Controlar permissões de acesso
+-   Indicar progresso no cadastro
+-   Definir preferências do usuário
+-   Liberar funcionalidades específicas
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Esse sistema substitui modelos tradicionais de controle de acesso por um mecanismo mais flexível e extensível.
+
+---
+
+## 🔌 Integrações (em desenvolvimento)
+
+-   **Google Calendar** – sincronização de agendamentos
+-   **Notificações** – via e-mail e pela própria plataforma
+-   **Estatísticas e relatórios** – para prestadores de serviço
+-   **Recomendações por região** – serviços exibidos conforme a localização do usuário
+
+---
+
+## 🧱 Stack Tecnológica
+
+| Tecnologia               | Descrição                                      |
+| ------------------------ | ---------------------------------------------- |
+| **PHP**                  | Linguagem principal                            |
+| **Laravel 12.x**         | Framework backend                              |
+| **PostgreSQL**           | Banco de dados                                 |
+| **IDs estilo Snowflake** | Geração distribuída de IDs ordenados por tempo |
+| **Flags dinâmicas**      | Controle de permissões e progresso             |
+
+---
+
+## 📌 Funcionalidades Futuras
+
+Painel administrativo para gerenciamento de flags
+
+Suporte a múltiplas regiões
+
+Listagem pública de serviços
+
+Agendamentos por disponibilidade (calendário)
+
+Sistema avançado de notificações (e-mail, in-app, push)
