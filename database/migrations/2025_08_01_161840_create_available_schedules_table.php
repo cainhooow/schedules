@@ -29,8 +29,7 @@ return new class extends Migration
             );
             $table->time('start_time');
             $table->time('end_time');
-            $table->boolean('available')->default(false);
-            $table->foreignIdFor(User::class)->constrained()->onDelete('cascade');
+            $table->boolean('available')->default(true);
             $table->foreignIdFor(Service::class)->constrained()->onDelete('cascade');
             $table->timestamps();
         });

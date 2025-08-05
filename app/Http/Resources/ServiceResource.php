@@ -69,7 +69,7 @@ class ServiceResource extends JsonResource
                 "min" => $this->min_price
             ],
             "provider" => [
-                "id" => $this->id,
+                "id" => $this->user->id,
                 "name" => $this->user->profile->name,
                 "username" => $this->user->username,
                 "bio" => $this->user->profile->bio,
@@ -77,7 +77,7 @@ class ServiceResource extends JsonResource
                 "phone" => $this->user->profile->phone,
             ],
             "address" => [
-                "id" => $this->id,
+                "id" => $this->address->id,
                 "state" => $this->address->state,
                 "city" => $this->address->city,
                 "street" => $this->address->street,

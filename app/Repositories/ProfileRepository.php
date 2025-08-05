@@ -19,13 +19,16 @@ class ProfileRepository implements ProfileInterface
     {
         return $this->model->find($id);
     }
+
     public function store(array $data)
     {
         return $this->model->with(['users'])->create($data);
     }
+
     public function update(int $id, array $data)
     {
         return $this->model->find($id)->update($data);
     }
+
     public function delete(int $id) {}
 }

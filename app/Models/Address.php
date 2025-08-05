@@ -11,14 +11,14 @@ class Address extends Model
 
     public $incrementing = false;
     protected $fillable = [
-        "default",
-        "state",
-        "city",
-        "address",
-        "street",
-        "neighborhood",
-        "number",
-        "user_id"
+        'default',
+        'state',
+        'city',
+        'address',
+        'street',
+        'neighborhood',
+        'number',
+        'user_id'
     ];
 
     public function services()

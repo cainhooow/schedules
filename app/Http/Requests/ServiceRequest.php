@@ -26,9 +26,9 @@ class ServiceRequest extends FormRequest
         return [
             'name' => 'required|string|max:100',
             'description' => 'string|max:2000',
-            'price' => 'decimal:10,2',
-            'min_price' => 'decimal:10,2',
-            'max_price' => 'decimal:10,2'
+            'price' => 'decimal:2,2',
+            'min_price' => 'decimal:2,2',
+            'max_price' => 'decimal:2,2'
         ];
     }
 

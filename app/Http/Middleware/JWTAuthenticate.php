@@ -21,7 +21,6 @@ class JwtAuthenticate
      */
     public function handle(Request $request, Closure $next): Response
     {
-
         if (!$token = $request->cookie(JwtSessions::SESSION_NAME)) {
             return response()->json(['error' => 'token_absent'], Response::HTTP_BAD_REQUEST);
         }

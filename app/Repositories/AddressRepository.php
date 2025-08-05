@@ -17,6 +17,7 @@ class AddressRepository implements AddressInterface
     {
         return $this->model->all();
     }
+
     public function getById(int $id)
     {
         return $this->model->with('user')->find($id);
@@ -26,10 +27,12 @@ class AddressRepository implements AddressInterface
     {
         return $this->model->create($data);
     }
+
     public function update(int $id, array $data)
     {
         return $this->model->find($id)->update($data);
     }
+
     public function delete(int $id)
     {
         return $this->model->find($id)->delete();

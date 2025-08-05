@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\Account\AccountController;
 use App\Http\Controllers\Api\Account\AddressController;
 use App\Http\Controllers\Api\Account\ProfileController;
+use App\Http\Controllers\Api\Account\Services\SchedulesController;
 use App\Http\Controllers\Api\Account\Services\UserServiceController;
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Middleware\JwtAuthenticate;
@@ -25,21 +26,25 @@ Route::get(
 );
 
 Route::prefix('/v1')->group(function () {
-    Route::get("me", [AuthController::class, 'user'])->name('user.me')
-        ->middleware([JwtAuthenticate::class]);
+    // Route::get("me", [AuthController::class, 'user'])->name('user.me')
+    //     ->middleware([JwtAuthenticate::class]);
 
     Route::prefix('/auth')->group(function () {
         Route::post('login', [AuthController::class, 'login'])->name('auth.login');
         Route::post('register', [AuthController::class, 'register'])->name('auth.register');
     });
 
-    Route::prefix('/account')->middleware([JwtAuthenticate::class])->group(function () {
-        Route::post('type', [
-            AccountController::class,
-            'defineType'
-        ])
-            ->name('account.type')
-            ->middleware('flags:ACCOUNT_TASK_LEVEL_1');
+    Route::prefix("me")->middleware([JwtAuthenticate::class])->group(function () {
+        Route::get("/", [AuthController::class, "user"]);
+
+        Route::prefix('/account')->group(function () {
+            Route::post('type', [
+                AccountController::class,
+                'defineType'
+            ])
+                ->name('account.type')
+                ->middleware('flags:ACCOUNT_TASK_LEVEL_1');
+        });
 
         Route::resource('profile', ProfileController::class, [
             'index',
@@ -47,14 +52,14 @@ Route::prefix('/v1')->group(function () {
             'update',
             'destroy'
         ])->names([
-            'index' => 'account.profile.index',
-            'store' => 'account.profile.store',
-            'update' => 'account.profile.update',
-            'destroy' => 'account.profile.destroy',
+            'index' => 'me.profile.index',
+            'store' => 'me.profile.store',
+            'update' => 'me.profile.update',
+            'destroy' => 'me.profile.destroy',
         ])->middlewareFor(['store'], 'flags:ACCOUNT_TASK_LEVEL_2');
 
         Route::post('/address/create', [AddressController::class, 'create'])
-            ->name('account.address.create')
+            ->name('me.address.create')
             ->middleware('flags:ACCOUNT_TASK_LEVEL_3');
         Route::resource('address', AddressController::class, [
             'index',
@@ -63,30 +68,52 @@ Route::prefix('/v1')->group(function () {
             'update',
             'destroy'
         ])->names([
-            'index' => 'account.address.index',
-            'show' => 'account.address.show',
-            'store' => 'account.address.store',
-            'update' => 'account.address.update',
-            'destroy' => 'account.address.destroy',
+            'index' => 'me.address.index',
+            'show' => 'me.address.show',
+            'store' => 'me.address.store',
+            'update' => 'me.address.update',
+            'destroy' => 'me.address.destroy',
         ])->parameters(['address' => 'addressId']);
 
         Route::resource('services', UserServiceController::class)
             ->names([
-                'index' => 'services.index',
-                'show' => 'services.show',
-                'store' => 'services.store',
-                'update' => 'services.update',
-                'destroy' => 'services.destroy'
+                'index' => 'me.services.index',
+                'show' => 'me.services.show',
+                'store' => 'me.services.store',
+                'update' => 'me.services.update',
+                'destroy' => 'me.services.destroy'
+            ])
+            ->middleware(['owns.service:ServiceServices,serviceId'])
+            ->middlewareFor([
+                'store',
+                'update',
+                'destroy'
+            ], [
+                'flags:CAN_CREATE_SERVICES,CAN_UPDATE_SERVICES',
+            ])
+            ->parameters(['services' => 'serviceId']);
+
+        Route::resource('services.schedules', SchedulesController::class)
+            ->names([
+                'index' => 'me.schedules.index',
+                'show' => 'me.schedules.show',
+                'store' => 'me.schedules.store',
+                'update' => 'me.schedules.update',
+                'destroy' => 'me.schedules.destroy'
+            ])
+            ->middleware([
+                'owns.service:ServiceServices,serviceId'
             ])
             ->middlewareFor([
                 'store',
                 'update',
                 'destroy'
             ], [
-                JwtAuthenticate::class,
                 'flags:CAN_CREATE_SERVICES,CAN_UPDATE_SERVICES'
-            ])
-            ->parameters(['services' => 'serviceId']);
+            ])->parameters([
+                'services' => 'serviceId',
+                'schedules' => 'scheduleId'
+            ]);
     });
 
     Route::prefix('/app')->group(function () {});
