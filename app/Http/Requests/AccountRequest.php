@@ -6,6 +6,21 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @OA\Schema(
+ *     schema="AccountRequest",
+ *     title="Request-Body Tipo de conta",
+ *     type="object",
+ *     required={"type"},
+ *     @OA\Property(
+ *         property="type",
+ *         type="string",
+ *         enum={"customer", "service", "enterprise"},
+ *         example="customer",
+ *         description="Tipo de conta: customer, service ou enterprise"
+ *     )
+ * )
+ */
 class AccountRequest extends FormRequest
 {
     /**

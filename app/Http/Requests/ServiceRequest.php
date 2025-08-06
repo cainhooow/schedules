@@ -6,6 +6,49 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @OA\Schema(
+ *     schema="ServiceRequest",
+ *     title="Request-Body Serviço",
+ *     type="object",
+ *     required={"name"},
+ *     @OA\Property(
+ *         property="name",
+ *         type="string",
+ *         maxLength=100,
+ *         example="Corte de Cabelo Masculino",
+ *         description="Nome do serviço (obrigatório)"
+ *     ),
+ *     @OA\Property(
+ *         property="description",
+ *         type="string",
+ *         maxLength=2000,
+ *         example="Serviço de corte de cabelo com máquina e tesoura.",
+ *         description="Descrição detalhada do serviço (opcional)"
+ *     ),
+ *     @OA\Property(
+ *         property="price",
+ *         type="number",
+ *         format="float",
+ *         example=49.90,
+ *         description="Preço base do serviço (opcional)"
+ *     ),
+ *     @OA\Property(
+ *         property="min_price",
+ *         type="number",
+ *         format="float",
+ *         example=40.00,
+ *         description="Preço mínimo (opcional)"
+ *     ),
+ *     @OA\Property(
+ *         property="max_price",
+ *         type="number",
+ *         format="float",
+ *         example=60.00,
+ *         description="Preço máximo (opcional)"
+ *     )
+ * )
+ */
 class ServiceRequest extends FormRequest
 {
     /**

@@ -8,7 +8,6 @@ use App\Http\Requests\SchedulesRequest;
 use App\Http\Resources\SchedulesResource;
 use App\Services\ScheduleServices;
 use App\Services\ServiceServices;
-use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class SchedulesController extends Controller

@@ -5,6 +5,63 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
+/**
+ * @OA\Schema(
+ *     schema="AddressRequest",
+ *     title="Request-Body Endereço",
+ *     type="object",
+ *     required={"state", "city"},
+ *     @OA\Property(
+ *         property="default",
+ *         type="boolean",
+ *         example=true,
+ *         description="Se este é o endereço padrão do usuário"
+ *     ),
+ *     @OA\Property(
+ *         property="state",
+ *         type="string",
+ *         minLength=2,
+ *         maxLength=3,
+ *         example="SP",
+ *         description="Estado (UF) obrigatório"
+ *     ),
+ *     @OA\Property(
+ *         property="city",
+ *         type="string",
+ *         minLength=3,
+ *         maxLength=30,
+ *         example="São Paulo",
+ *         description="Nome da cidade (obrigatório)"
+ *     ),
+ *     @OA\Property(
+ *         property="address",
+ *         type="string",
+ *         maxLength=120,
+ *         example="Avenida Paulista, 1578",
+ *         description="Endereço completo"
+ *     ),
+ *     @OA\Property(
+ *         property="street",
+ *         type="string",
+ *         maxLength=120,
+ *         example="Rua das Flores",
+ *         description="Nome da rua"
+ *     ),
+ *     @OA\Property(
+ *         property="neighborhood",
+ *         type="string",
+ *         maxLength=120,
+ *         example="Bela Vista",
+ *         description="Nome do bairro"
+ *     ),
+ *     @OA\Property(
+ *         property="number",
+ *         type="string",
+ *         example="42A",
+ *         description="Número do imóvel (string por flexibilidade)"
+ *     )
+ * )
+ */
 class AddressRequest extends FormRequest
 {
     /**

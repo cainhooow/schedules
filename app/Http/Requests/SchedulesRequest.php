@@ -5,6 +5,37 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
+/**
+ * @OA\Schema(
+ *     schema="SchedulesRequest",
+ *     title="Request-Body Disponibilidade",
+ *     type="object",
+ *     required={"day_of_week", "start_time", "end_time"},
+ *     @OA\Property(
+ *         property="day_of_week",
+ *         type="string",
+ *         example="monday",
+ *         enum={"monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"},
+ *         description="Dia da semana (em inglês, obrigatório)"
+ *     ),
+ *     @OA\Property(
+ *         property="start_time",
+ *         type="string",
+ *         format="time",
+ *         pattern="^([01]\d|2[0-3]):([0-5]\d):([0-5]\d)$",
+ *         example="09:00:00",
+ *         description="Hora de início no formato H:i:s (obrigatório, deve ser menor que end_time)"
+ *     ),
+ *     @OA\Property(
+ *         property="end_time",
+ *         type="string",
+ *         format="time",
+ *         pattern="^([01]\d|2[0-3]):([0-5]\d):([0-5]\d)$",
+ *         example="18:00:00",
+ *         description="Hora de término no formato H:i:s (obrigatório, deve ser maior que start_time)"
+ *     )
+ * )
+ */
 class SchedulesRequest extends FormRequest
 {
     /**

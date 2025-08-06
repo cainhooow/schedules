@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\Account\ProfileController;
 use App\Http\Controllers\Api\Account\Services\SchedulesController;
 use App\Http\Controllers\Api\Account\Services\UserServiceController;
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\ServicesController;
 use App\Http\Middleware\JwtAuthenticate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -116,5 +117,16 @@ Route::prefix('/v1')->group(function () {
             ]);
     });
 
-    Route::prefix('/app')->group(function () {});
+    Route::get('/services', [ServicesController::class, 'index'])
+        ->name('services.index');
+
+    Route::get('/services/{serviceId}', [ServicesController::class, 'show'])
+        ->name('services.show');
+
+    Route::get('/services/{serviceId}/schedules', [ServicesController::class, 'getSchedules'])
+        ->name('services.schedules');
+
+    Route::middleware([JwtAuthenticate::class])
+        ->post('/services/{serviceId}/schedule/{scheduleId}', [ServicesController::class, 'toSchedule'])
+        ->name('services.schedule');
 });

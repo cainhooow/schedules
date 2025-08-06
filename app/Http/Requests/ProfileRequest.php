@@ -5,6 +5,41 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
+/**
+ * @OA\Schema(
+ *     schema="ProfileRequest",
+ *     title="Request-Body Perfil",
+ *     type="object",
+ *     required={"name"},
+ *     @OA\Property(
+ *         property="name",
+ *         type="string",
+ *         minLength=2,
+ *         example="João Silva",
+ *         description="Nome completo do usuário (obrigatório)"
+ *     ),
+ *     @OA\Property(
+ *         property="bio",
+ *         type="string",
+ *         maxLength=1500,
+ *         example="Sou um profissional dedicado com anos de experiência...",
+ *         description="Biografia ou descrição do usuário (opcional)"
+ *     ),
+ *     @OA\Property(
+ *         property="avatar",
+ *         type="string",
+ *         format="url",
+ *         example="https://example.com/avatar.jpg",
+ *         description="URL do avatar do usuário (opcional)"
+ *     ),
+ *     @OA\Property(
+ *         property="phone",
+ *         type="string",
+ *         example="+55 11 91234-5678",
+ *         description="Telefone de contato (opcional)"
+ *     )
+ * )
+ */
 class ProfileRequest extends FormRequest
 {
     /**

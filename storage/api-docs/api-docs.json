@@ -90,6 +90,77 @@
     },
     "components": {
         "schemas": {
+            "AccountRequest": {
+                "title": "Request-Body Tipo de conta",
+                "required": [
+                    "type"
+                ],
+                "properties": {
+                    "type": {
+                        "description": "Tipo de conta: customer, service ou enterprise",
+                        "type": "string",
+                        "enum": [
+                            "customer",
+                            "service",
+                            "enterprise"
+                        ],
+                        "example": "customer"
+                    }
+                },
+                "type": "object"
+            },
+            "AddressRequest": {
+                "title": "Request-Body Endereço",
+                "required": [
+                    "state",
+                    "city"
+                ],
+                "properties": {
+                    "default": {
+                        "description": "Se este é o endereço padrão do usuário",
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "state": {
+                        "description": "Estado (UF) obrigatório",
+                        "type": "string",
+                        "maxLength": 3,
+                        "minLength": 2,
+                        "example": "SP"
+                    },
+                    "city": {
+                        "description": "Nome da cidade (obrigatório)",
+                        "type": "string",
+                        "maxLength": 30,
+                        "minLength": 3,
+                        "example": "São Paulo"
+                    },
+                    "address": {
+                        "description": "Endereço completo",
+                        "type": "string",
+                        "maxLength": 120,
+                        "example": "Avenida Paulista, 1578"
+                    },
+                    "street": {
+                        "description": "Nome da rua",
+                        "type": "string",
+                        "maxLength": 120,
+                        "example": "Rua das Flores"
+                    },
+                    "neighborhood": {
+                        "description": "Nome do bairro",
+                        "type": "string",
+                        "maxLength": 120,
+                        "example": "Bela Vista"
+                    },
+                    "number": {
+                        "description": "Número do imóvel (string por flexibilidade)",
+                        "type": "string",
+                        "example": "42A"
+                    }
+                },
+                "type": "object"
+            },
             "LoginRequest": {
                 "title": "Request-Body Login",
                 "required": [
@@ -109,6 +180,38 @@
                         "format": "password",
                         "minLength": 6,
                         "example": "senhaSegura123"
+                    }
+                },
+                "type": "object"
+            },
+            "ProfileRequest": {
+                "title": "Request-Body Perfil",
+                "required": [
+                    "name"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "Nome completo do usuário (obrigatório)",
+                        "type": "string",
+                        "minLength": 2,
+                        "example": "João Silva"
+                    },
+                    "bio": {
+                        "description": "Biografia ou descrição do usuário (opcional)",
+                        "type": "string",
+                        "maxLength": 1500,
+                        "example": "Sou um profissional dedicado com anos de experiência..."
+                    },
+                    "avatar": {
+                        "description": "URL do avatar do usuário (opcional)",
+                        "type": "string",
+                        "format": "url",
+                        "example": "https://example.com/avatar.jpg"
+                    },
+                    "phone": {
+                        "description": "Telefone de contato (opcional)",
+                        "type": "string",
+                        "example": "+55 11 91234-5678"
                     }
                 },
                 "type": "object"
@@ -139,6 +242,84 @@
                         "format": "password",
                         "minLength": 6,
                         "example": "senhaSegura123"
+                    }
+                },
+                "type": "object"
+            },
+            "SchedulesRequest": {
+                "title": "Request-Body Disponibilidade",
+                "required": [
+                    "day_of_week",
+                    "start_time",
+                    "end_time"
+                ],
+                "properties": {
+                    "day_of_week": {
+                        "description": "Dia da semana (em inglês, obrigatório)",
+                        "type": "string",
+                        "enum": [
+                            "monday",
+                            "tuesday",
+                            "wednesday",
+                            "thursday",
+                            "friday",
+                            "saturday",
+                            "sunday"
+                        ],
+                        "example": "monday"
+                    },
+                    "start_time": {
+                        "description": "Hora de início no formato H:i:s (obrigatório, deve ser menor que end_time)",
+                        "type": "string",
+                        "format": "time",
+                        "pattern": "^([01]\\d|2[0-3]):([0-5]\\d):([0-5]\\d)$",
+                        "example": "09:00:00"
+                    },
+                    "end_time": {
+                        "description": "Hora de término no formato H:i:s (obrigatório, deve ser maior que start_time)",
+                        "type": "string",
+                        "format": "time",
+                        "pattern": "^([01]\\d|2[0-3]):([0-5]\\d):([0-5]\\d)$",
+                        "example": "18:00:00"
+                    }
+                },
+                "type": "object"
+            },
+            "ServiceRequest": {
+                "title": "Request-Body Serviço",
+                "required": [
+                    "name"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "Nome do serviço (obrigatório)",
+                        "type": "string",
+                        "maxLength": 100,
+                        "example": "Corte de Cabelo Masculino"
+                    },
+                    "description": {
+                        "description": "Descrição detalhada do serviço (opcional)",
+                        "type": "string",
+                        "maxLength": 2000,
+                        "example": "Serviço de corte de cabelo com máquina e tesoura."
+                    },
+                    "price": {
+                        "description": "Preço base do serviço (opcional)",
+                        "type": "number",
+                        "format": "float",
+                        "example": 49.9
+                    },
+                    "min_price": {
+                        "description": "Preço mínimo (opcional)",
+                        "type": "number",
+                        "format": "float",
+                        "example": 40
+                    },
+                    "max_price": {
+                        "description": "Preço máximo (opcional)",
+                        "type": "number",
+                        "format": "float",
+                        "example": 60
                     }
                 },
                 "type": "object"
@@ -204,6 +385,40 @@
                         "type": "string",
                         "format": "uri",
                         "example": "https://cdn.exemplo.com/avatars/123.jpg"
+                    }
+                },
+                "type": "object"
+            },
+            "ScheduleResponse": {
+                "title": "Response-Body Disponibilidade",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": "123"
+                    },
+                    "day_of_week": {
+                        "type": "string",
+                        "example": "monday"
+                    },
+                    "start_time": {
+                        "type": "string",
+                        "example": "08:30:00"
+                    },
+                    "end_time": {
+                        "type": "string",
+                        "example": "12:30:00"
+                    },
+                    "available": {
+                        "type": "boolean",
+                        "example": "false"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date"
                     }
                 },
                 "type": "object"
