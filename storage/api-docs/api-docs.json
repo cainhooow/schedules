@@ -6,6 +6,166 @@
         "version": "1.0.0"
     },
     "paths": {
+        "/api/v1/me/address": {
+            "get": {
+                "tags": [
+                    "Endereços"
+                ],
+                "summary": "Informações sobre o endereço do usuário",
+                "operationId": "7dc955dbfe7e60f521fd1d2b8ba5d953",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/AddressResponse"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Endereços"
+                ],
+                "summary": "Criando um endereço",
+                "operationId": "f6b92af5760b664c039867fecacb2d9e",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AddressRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AddressResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/me/address/create": {
+            "post": {
+                "tags": [
+                    "Endereços"
+                ],
+                "summary": "Criando um endereço padrão",
+                "operationId": "79961e74037b18202e2dd12ba622db8a",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AddressRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AddressResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/me/address/{addressId}": {
+            "delete": {
+                "tags": [
+                    "Endereços"
+                ],
+                "summary": "Deletando um endereço",
+                "operationId": "b5ab745489be15bc226b79ffb55784e5",
+                "parameters": [
+                    {
+                        "name": "addressId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Mensagem confirmando a exclusão do registro",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Endereços"
+                ],
+                "summary": "Atualizando um endereço",
+                "operationId": "38b008b3e5b1cc7fbb733729d83ded05",
+                "parameters": [
+                    {
+                        "name": "addressId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AddressRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AddressResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/me/profile": {
             "get": {
                 "tags": [
@@ -243,13 +403,13 @@
                 }
             }
         },
-        "api/v1/services/{serviceId}/{scheduleId}": {
+        "/api/v1/services/{serviceId}/{scheduleId}": {
             "post": {
                 "tags": [
                     "Serviços"
                 ],
                 "summary": "Agendar um serviço(Em produção)",
-                "operationId": "bb256325c1831baafad85f0790bfba49",
+                "operationId": "5c29e0c297839247b51aa48ae04af019",
                 "parameters": [
                     {
                         "name": "serviceId",
@@ -777,6 +937,10 @@
         }
     },
     "tags": [
+        {
+            "name": "Endereços",
+            "description": "Endereços"
+        },
         {
             "name": "Perfil de usuário",
             "description": "Perfil de usuário"
