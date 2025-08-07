@@ -10,9 +10,21 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *     schema="ScheduleResponse",
  *     type="object",
  *     title="Response-Body Disponibilidade",
- *     @OA\Property(property="id", type="integer", example="123"),
- *     @OA\Property(property="day_of_week", type="string", example="monday"),
- *     @OA\Property(property="start_time", type="string", example="08:30:00"),
+ *     @OA\Property(
+ *       property="id",
+ *       type="integer",
+ *       example="123"
+ *     ),
+ *     @OA\Property(
+ *       property="day_of_week",
+ *       type="string",
+ *       example="monday"
+ *     ),
+ *     @OA\Property(
+ *      property="start_time",
+ *      type="string",
+ *      example="08:30:00"
+ *     ),
  *     @OA\Property(property="end_time", type="string", example="12:30:00"),
  *     @OA\Property(property="available", type="boolean", example="false"),
  *     @OA\Property(property="created_at", type="date"),

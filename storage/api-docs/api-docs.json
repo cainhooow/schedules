@@ -86,6 +86,132 @@
                     }
                 }
             }
+        },
+        "/api/v1/services": {
+            "get": {
+                "tags": [
+                    "Serviços"
+                ],
+                "summary": "Listagem de serviços",
+                "operationId": "934e08fdab8ea421640b9f1a621fb010",
+                "responses": {
+                    "200": {
+                        "description": "Retorna a lista de serviços disponiveis na plataforma, criada por usuários.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ServiceResponse"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/services/{serviceId}": {
+            "get": {
+                "tags": [
+                    "Serviços"
+                ],
+                "summary": "Informações de um serviço",
+                "operationId": "056e8e781ef94a68091dddf86b80dc35",
+                "parameters": [
+                    {
+                        "name": "serviceId",
+                        "in": "path",
+                        "description": "Id do serviço para buscar",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ServiceResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/services/{serviceId}/schedules": {
+            "get": {
+                "tags": [
+                    "Serviços"
+                ],
+                "summary": "Informações de um horario",
+                "operationId": "541e117da8ca150470dc4318c2a4a06f",
+                "parameters": [
+                    {
+                        "name": "serviceId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ScheduleResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "api/v1/services/{serviceId}/{scheduleId}": {
+            "post": {
+                "tags": [
+                    "Serviços"
+                ],
+                "summary": "Agendar um serviço",
+                "operationId": "bb256325c1831baafad85f0790bfba49",
+                "parameters": [
+                    {
+                        "name": "serviceId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "scheduleId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ScheduleResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -577,6 +703,10 @@
         {
             "name": "Autenticação",
             "description": "Autenticação"
+        },
+        {
+            "name": "Serviços",
+            "description": "Serviços"
         }
     ]
 }
