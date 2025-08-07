@@ -12,11 +12,38 @@ use Symfony\Component\HttpFoundation\Response;
 class ProfileController extends Controller
 {
     public function __construct(protected $service = new ProfileServices()) {}
-    //
+    /**
+     * @OA\Get(
+     *   path="/api/v1/me/profile",
+     *   tags={"Perfil de usuário"},
+     *   summary="Informações do perfil de usuário",
+     *   @OA\Response(
+     *     response=200,
+     *     description="OK",
+     *     @OA\JsonContent(ref="#/components/schemas/ProfileResponse")
+     *   )
+     * )
+     */
     public function index()
     {
         return new ProfileResource(Auth::user()->profile);
     }
+    /**
+     * @OA\Post(
+     *   path="/api/v1/me/profile",
+     *   tags={"Perfil de usuário"},
+     *   summary="Criando um perfil",
+     *   @OA\RequestBody(
+     *     required=true,
+     *     @OA\JsonContent(ref="#/components/schemas/ProfileRequest")
+     *   ),
+     *   @OA\Response(
+     *     response=200,
+     *     description="OK",
+     *     @OA\JsonContent(ref="#/components/schemas/ProfileResponse")
+     *   )
+     * )
+     */
     public function store(ProfileRequest $request)
     {
         $data = $request->validated();
@@ -25,6 +52,18 @@ class ProfileController extends Controller
 
         return new ProfileResource($profileCreated);
     }
+    /**
+     * @OA\Put(
+     *   path="/api/v1/me/profile",
+     *   tags={"Perfil de usuário"},
+     *   summary="Atualizando um perfil",
+     *   @OA\Response(
+     *     response=200,
+     *     description="OK",
+     *     @OA\JsonContent(ref="#/components/schemas/ProfileResponse")
+     *   )
+     * )
+     */
     public function update(ProfileRequest $request)
     {
         $data = $request->validated();

@@ -80,7 +80,7 @@ class ServicesController extends Controller
     }
     /**
      * @OA\Post(
-     *   path="api/v1/services/{serviceId}/{scheduleId}",
+     *   path="/api/v1/services/{serviceId}/{scheduleId}",
      *   tags={"Serviços"},
      *   summary="Agendar um serviço(Em produção)",
      *   @OA\Parameter(
@@ -94,6 +94,15 @@ class ServicesController extends Controller
      *     in="path",
      *     required=true,
      *     @OA\Schema(type="string")
+     *   ),
+     *   @OA\Response(
+     *     response=200,
+     *     description="OK",
+     *     @OA\JsonContent(
+     *       type="string",
+     *       required={"name"},
+     *       @OA\Property(property="name", type="string")
+     *     )
      *   )
      * )
      */

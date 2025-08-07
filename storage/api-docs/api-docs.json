@@ -6,6 +6,75 @@
         "version": "1.0.0"
     },
     "paths": {
+        "/api/v1/me/profile": {
+            "get": {
+                "tags": [
+                    "Perfil de usuário"
+                ],
+                "summary": "Informações do perfil de usuário",
+                "operationId": "c4e62d8a7d28bd000f28e0eda3c1d210",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProfileResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Perfil de usuário"
+                ],
+                "summary": "Atualizando um perfil",
+                "operationId": "83f1bc29023080d59867909a2f6fbf5a",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProfileResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Perfil de usuário"
+                ],
+                "summary": "Criando um perfil",
+                "operationId": "e5f8aef727338c6ddd78fde1fe0b58cc",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProfileRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProfileResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/me": {
             "get": {
                 "tags": [
@@ -179,7 +248,7 @@
                 "tags": [
                     "Serviços"
                 ],
-                "summary": "Agendar um serviço",
+                "summary": "Agendar um serviço(Em produção)",
                 "operationId": "bb256325c1831baafad85f0790bfba49",
                 "parameters": [
                     {
@@ -205,7 +274,15 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ScheduleResponse"
+                                    "required": [
+                                        "name"
+                                    ],
+                                    "properties": {
+                                        "name": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "string"
                                 }
                             }
                         }
@@ -700,6 +777,10 @@
         }
     },
     "tags": [
+        {
+            "name": "Perfil de usuário",
+            "description": "Perfil de usuário"
+        },
         {
             "name": "Autenticação",
             "description": "Autenticação"
