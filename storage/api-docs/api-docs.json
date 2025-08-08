@@ -235,6 +235,168 @@
                 }
             }
         },
+        "/api/v1/me/services": {
+            "get": {
+                "tags": [
+                    "Serviços do usuário"
+                ],
+                "summary": "Listar serviços do usuário",
+                "operationId": "0c909559560bb0b9e894eb0dcc77d921",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ServiceResponse"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Serviços do usuário"
+                ],
+                "summary": "Criando um serviço",
+                "operationId": "85f6b3648ab115ddfd196ae99e15f5ad",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ServiceRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ServiceResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/me/services/{serviceId}": {
+            "get": {
+                "tags": [
+                    "Serviços do usuário"
+                ],
+                "summary": "Informações sobre o serviço",
+                "operationId": "271616dfceb88c9ea4b189a6a91b639f",
+                "parameters": [
+                    {
+                        "name": "serviceId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ServiceResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Serviços do usuário"
+                ],
+                "summary": "Atualizando um serviço",
+                "operationId": "ab2682b4c412d7dc4b250414264920fb",
+                "parameters": [
+                    {
+                        "name": "serviceId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ServiceRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Serviços do usuário"
+                ],
+                "summary": "Deletando um serviço",
+                "operationId": "5014742b7e3d31393074eefd56dc7849",
+                "parameters": [
+                    {
+                        "name": "serviceId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/me": {
             "get": {
                 "tags": [
@@ -944,6 +1106,10 @@
         {
             "name": "Perfil de usuário",
             "description": "Perfil de usuário"
+        },
+        {
+            "name": "Serviços do usuário",
+            "description": "Serviços do usuário"
         },
         {
             "name": "Autenticação",

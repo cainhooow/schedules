@@ -17,14 +17,63 @@ class UserServiceController extends Controller
         protected $flagsService = new FlagServices()
     ) {}
 
+    /**
+     * @OA\Get(
+     *   path="/api/v1/me/services",
+     *   tags={"Serviços do usuário"},
+     *   summary="Listar serviços do usuário",
+     *   @OA\Response(
+     *     response=200,
+     *     description="OK",
+     *     @OA\JsonContent(
+     *       type="array",
+     *       @OA\Items(ref="#/components/schemas/ServiceResponse")
+     *     )
+     *   )
+     * )
+     */
     public function index()
     {
         return ServiceResource::collection(Auth::user()->services);
     }
+    /**
+     * @OA\Get(
+     *   path="/api/v1/me/services/{serviceId}",
+     *   tags={"Serviços do usuário"},
+     *   summary="Informações sobre o serviço",
+     *   @OA\Parameter(
+     *     name="serviceId",
+     *     in="path",
+     *     required=true,
+     *     @OA\Schema(type="integer")
+     *   ),
+     *   @OA\Response(
+     *     response=200,
+     *     description="OK",
+     *     @OA\JsonContent(ref="#/components/schemas/ServiceResponse")
+     *   )
+     * )
+     */
     public function show(int $serviceId)
     {
         return new ServiceResource($this->service->getById($serviceId));
     }
+    /**
+     * @OA\Post(
+     *   path="/api/v1/me/services",
+     *   tags={"Serviços do usuário"},
+     *   summary="Criando um serviço",
+     *   @OA\RequestBody(
+     *     required=true,
+     *     @OA\JsonContent(ref="#/components/schemas/ServiceRequest")
+     *   ),
+     *   @OA\Response(
+     *     response=200,
+     *     description="OK",
+     *     @OA\JsonContent(ref="#/components/schemas/ServiceResponse")
+     *   )
+     * )
+     */
     public function store(ServiceRequest $request)
     {
         $data = $request->validated();
@@ -33,6 +82,31 @@ class UserServiceController extends Controller
 
         return new ServiceResource($createdService);
     }
+    /**
+     * @OA\Put(
+     *   path="/api/v1/me/services/{serviceId}",
+     *   tags={"Serviços do usuário"},
+     *   summary="Atualizando um serviço",
+     *   @OA\Parameter(
+     *     name="serviceId",
+     *     in="path",
+     *     required=true,
+     *     @OA\Schema(type="integer")
+     *   ),
+     *   @OA\RequestBody(
+     *     required=true,
+     *     @OA\JsonContent(ref="#/components/schemas/ServiceRequest")
+     *   ),
+     *   @OA\Response(
+     *     response=200,
+     *     description="OK",
+     *     @OA\JsonContent(
+     *       type="string",
+     *       @OA\Property(property="message", type="string")
+     *     )
+     *   )
+     * )
+     */
     public function update(ServiceRequest $request, int $serviceId)
     {
         $data = $request->validated();
@@ -56,6 +130,26 @@ class UserServiceController extends Controller
 
         return response(['message' => 'Serviço atualizado com sucesso']);
     }
-
+    /**
+     * @OA\Delete(
+     *   path="/api/v1/me/services/{serviceId}",
+     *   tags={"Serviços do usuário"},
+     *   summary="Deletando um serviço",
+     *   @OA\Parameter(
+     *     name="serviceId",
+     *     in="path",
+     *     required=true,
+     *     @OA\Schema(type="integer")
+     *   ),
+     *   @OA\Response(
+     *     response=200,
+     *     description="OK",
+     *     @OA\JsonContent(
+     *       type="string",
+     *       @OA\Property(property="message", type="string")
+     *     )
+     *   )
+     * )
+     */
     public function destroy(int $serviceId) {}
 }
