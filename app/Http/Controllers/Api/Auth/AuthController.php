@@ -39,7 +39,6 @@ class AuthController extends Controller
         $user = $this->service->getById(Auth::user()->id);
         return new UserResource($user);
     }
-
     /**
      * @OA\Post(
      *     path="/api/v1/auth/login",
@@ -97,7 +96,6 @@ class AuthController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
-
     /**
      * @OA\Post(
      *     path="/api/v1/register",

@@ -7,7 +7,7 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 
 /**
  * @OA\Schema(
- *     schema="SchedulesRequest",
+ *     schema="ScheduleRequest",
  *     title="Request-Body Disponibilidade",
  *     type="object",
  *     required={"day_of_week", "start_time", "end_time"},

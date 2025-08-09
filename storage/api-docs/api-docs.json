@@ -235,6 +235,215 @@
                 }
             }
         },
+        "/api/v1/me/services/{serviceId}/schedules": {
+            "get": {
+                "tags": [
+                    "Horarios de serviço disponiveis"
+                ],
+                "summary": "Listar horarios do serviço",
+                "operationId": "74f2624614c8f9e193635f6e5c221b7a",
+                "parameters": [
+                    {
+                        "name": "serviceId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ScheduleResponse"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/me/services/{serviceId}/schedules/{scheduleId}": {
+            "get": {
+                "tags": [
+                    "Horarios de serviço disponiveis"
+                ],
+                "summary": "Informações sobre um horario",
+                "operationId": "965939b37664c1f26ba126a562d82414",
+                "parameters": [
+                    {
+                        "name": "serviceId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "scheduleId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ScheduleResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Horarios de serviço disponiveis"
+                ],
+                "summary": "Criando um horario",
+                "operationId": "1d8fb40a71c41366709b2219faf1d29c",
+                "parameters": [
+                    {
+                        "name": "serviceId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "scheduleId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ScheduleRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ScheduleResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Horarios de serviço disponiveis"
+                ],
+                "summary": "Deletando um horario",
+                "operationId": "024fac297e14bd705516a35c1fc91bb0",
+                "parameters": [
+                    {
+                        "name": "serviceId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "scheduleId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Horarios de serviço disponiveis"
+                ],
+                "summary": "Atualizando um horario",
+                "operationId": "61066c822c40da3653fad4c09959b87d",
+                "parameters": [
+                    {
+                        "name": "serviceId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "scheduleId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ScheduleRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ScheduleResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/me/services": {
             "get": {
                 "tags": [
@@ -771,7 +980,7 @@
                 },
                 "type": "object"
             },
-            "SchedulesRequest": {
+            "ScheduleRequest": {
                 "title": "Request-Body Disponibilidade",
                 "required": [
                     "day_of_week",
@@ -1106,6 +1315,10 @@
         {
             "name": "Perfil de usuário",
             "description": "Perfil de usuário"
+        },
+        {
+            "name": "Horarios de serviço disponiveis",
+            "description": "Horarios de serviço disponiveis"
         },
         {
             "name": "Serviços do usuário",

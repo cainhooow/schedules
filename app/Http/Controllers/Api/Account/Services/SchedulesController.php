@@ -17,12 +17,56 @@ class SchedulesController extends Controller
         protected $userServices = new ServiceServices()
     ) {}
 
+    /**
+     * @OA\Get(
+     *   path="/api/v1/me/services/{serviceId}/schedules",
+     *   tags={"Horarios de serviço disponiveis"},
+     *   summary="Listar horarios do serviço",
+     *   @OA\Parameter(
+     *     name="serviceId",
+     *     in="path",
+     *     required=true,
+     *     @OA\Schema(type="integer")
+     *   ),
+     *   @OA\Response(
+     *     response=200,
+     *     description="OK",
+     *     @OA\JsonContent(
+     *       type="array",
+     *       @OA\Items(ref="#/components/schemas/ScheduleResponse")
+     *     )
+     *   )
+     * )
+     */
     public function index()
     {
         $service = request()->attributes->get('authorized_serviceId');
         return SchedulesResource::collection($service->schedules);
     }
-
+    /**
+     * @OA\Get(
+     *   path="/api/v1/me/services/{serviceId}/schedules/{scheduleId}",
+     *   tags={"Horarios de serviço disponiveis"},
+     *   summary="Informações sobre um horario",
+     *   @OA\Parameter(
+     *     name="serviceId",
+     *     in="path",
+     *     required=true,
+     *     @OA\Schema(type="integer")
+     *   ),
+     *   @OA\Parameter(
+     *     name="scheduleId",
+     *     in="path",
+     *     required=true,
+     *     @OA\Schema(type="integer")
+     *   ),
+     *   @OA\Response(
+     *     response=200,
+     *     description="OK",
+     *     @OA\JsonContent(ref="#/components/schemas/ScheduleResponse")
+     *   )
+     * )
+     */
     public function show(int $serviceId, int $scheduleId)
     {
         if (!$schedule = $this->service->getById($scheduleId)) {
@@ -32,7 +76,34 @@ class SchedulesController extends Controller
         $this->authorize('view', $schedule);
         return new SchedulesResource($schedule);
     }
-
+    /**
+     * @OA\Post(
+     *   path="/api/v1/me/services/{serviceId}/schedules/{scheduleId}",
+     *   tags={"Horarios de serviço disponiveis"},
+     *   summary="Criando um horario",
+     *   @OA\Parameter(
+     *     name="serviceId",
+     *     in="path",
+     *     required=true,
+     *     @OA\Schema(type="integer")
+     *   ),
+     *   @OA\Parameter(
+     *     name="scheduleId",
+     *     in="path",
+     *     required=true,
+     *     @OA\Schema(type="integer")
+     *   ),
+     *   @OA\RequestBody(
+     *     required=true,
+     *     @OA\JsonContent(ref="#/components/schemas/ScheduleRequest")
+     *   ),
+     *   @OA\Response(
+     *     response=200,
+     *     description="OK",
+     *     @OA\JsonContent(ref="#/components/schemas/ScheduleResponse")
+     *   )
+     * )
+     */
     public function store(SchedulesRequest $request, int $serviceId)
     {
         $data = $request->validated();
@@ -45,7 +116,34 @@ class SchedulesController extends Controller
             return response()->json(['error' => true, 'message' => $e->getMessage()]);
         }
     }
-
+    /**
+     * @OA\Patch(
+     *   path="/api/v1/me/services/{serviceId}/schedules/{scheduleId}",
+     *   tags={"Horarios de serviço disponiveis"},
+     *   summary="Atualizando um horario",
+     *   @OA\Parameter(
+     *     name="serviceId",
+     *     in="path",
+     *     required=true,
+     *     @OA\Schema(type="integer")
+     *   ),
+     *   @OA\Parameter(
+     *     name="scheduleId",
+     *     in="path",
+     *     required=true,
+     *     @OA\Schema(type="integer")
+     *   ),
+     *   @OA\RequestBody(
+     *     required=true,
+     *     @OA\JsonContent(ref="#/components/schemas/ScheduleRequest")
+     *   ),
+     *   @OA\Response(
+     *     response=200,
+     *     description="OK",
+     *     @OA\JsonContent(ref="#/components/schemas/ScheduleResponse")
+     *   )
+     * )
+     */
     public function update(SchedulesRequest $request, int $serviceId, int $scheduleId)
     {
         if (!$schedule = $this->service->getById($scheduleId)) {
@@ -69,7 +167,33 @@ class SchedulesController extends Controller
             );
         }
     }
-
+    /**
+     * @OA\Delete(
+     *   path="/api/v1/me/services/{serviceId}/schedules/{scheduleId}",
+     *   tags={"Horarios de serviço disponiveis"},
+     *   summary="Deletando um horario",
+     *   @OA\Parameter(
+     *     name="serviceId",
+     *     in="path",
+     *     required=true,
+     *     @OA\Schema(type="integer")
+     *   ),
+     *   @OA\Parameter(
+     *     name="scheduleId",
+     *     in="path",
+     *     required=true,
+     *     @OA\Schema(type="integer")
+     *   ),
+     *   @OA\Response(
+     *     response=200,
+     *     description="OK",
+     *     @OA\JsonContent(
+     *       type="object",
+     *       @OA\Property(property="message", type="string")
+     *     )
+     *   )
+     * )
+     */
     public function destroy(int $serviceId, int $scheduleId)
     {
         if (!$schedule = $this->service->getById($scheduleId)) {
