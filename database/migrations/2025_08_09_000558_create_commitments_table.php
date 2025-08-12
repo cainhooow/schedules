@@ -16,7 +16,12 @@ return new class extends Migration
     {
         Schema::create('commitments', function (Blueprint $table) {
             $table->unsignedBigInteger('id')->primary();
-            $table->longText('comment');
+            $table->longText('comment')->nullable();
+            $table->enum('status', [
+                'scheduled',
+                'closed',
+                'canceled'
+            ])->default('scheduled');
             $table->foreignIdFor(User::class, 'service_provider_id');
             $table->foreignIdFor(User::class, 'customer_id');
             $table->foreignIdFor(AvailableSchedules::class);
