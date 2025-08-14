@@ -16,15 +16,23 @@ class Commitment extends Model
         'id',
         'comment',
         'status',
-        'service_provider_id',
-        'customer_id'
+        'customer_id',
+        'service_id',
+        'schedule_id',
     ];
 
-    public function serviceProvider() {
-        return $this->belongsTo(User::class, 'service_provider_id');
+    public function service()
+    {
+        return $this->belongsTo(Service::class);
     }
 
-    public function customer() {
+    public function schedule()
+    {
+        return $this->belongsTo(AvailableSchedules::class);
+    }
+
+    public function customer()
+    {
         return $this->belongsTo(User::class, 'customer_id');
     }
 }

@@ -11,7 +11,7 @@ class CommitmentRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,6 +21,8 @@ class CommitmentRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [];
+        return [
+            'comment' => 'string|max:1500|nullable'
+        ];
     }
 }

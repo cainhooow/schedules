@@ -2,17 +2,23 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Exceptions\InvalidScheduleException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CommitmentRequest;
+use App\Http\Resources\CommitmentResource;
 use App\Http\Resources\SchedulesResource;
 use App\Http\Resources\ServiceResource;
+use App\Services\CommitmentServices;
 use App\Services\ServiceServices;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 
 class ServicesController extends Controller
 {
     //
     public function __construct(
-        protected $service = new ServiceServices()
+        protected $service = new ServiceServices(),
+        protected $commitmentServices = new CommitmentServices()
     ) {}
     /**
      * @OA\Get(
@@ -106,5 +112,21 @@ class ServicesController extends Controller
      *   )
      * )
      */
-    public function toSchedule(Request $request, int $serviceId, int $scheduleId) {}
+    public function toSchedule(CommitmentRequest $request, int $serviceId, int $scheduleId)
+    {
+        $data = $request->validated();
+
+        $data['service_id'] = $serviceId;
+        $data['schedule_id'] = $scheduleId;
+        $data['customer_id'] = Auth::user()->id;
+
+        try {
+            $createdCommitment = $this->commitmentServices->store($data);
+            return new CommitmentResource($createdCommitment);
+        } catch (InvalidScheduleException $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
 }

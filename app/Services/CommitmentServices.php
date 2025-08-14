@@ -2,16 +2,43 @@
 
 namespace App\Services;
 
+use App\Exceptions\InvalidScheduleException;
 use App\Repositories\CommitmentRepository;
 
 class CommitmentServices
 {
     public function __construct(
-        protected CommitmentRepository $repository
+        protected CommitmentRepository $repository = new CommitmentRepository(),
+        protected ScheduleServices $scheduleServices = new ScheduleServices(),
+        protected ServiceServices $serviceServices = new ServiceServices(),
+        protected UserServices $userServices = new UserServices(),
     ) {}
 
     public function getAll()
     {
         return $this->repository->index();
+    }
+
+    public function getById(int $id)
+    {
+        return $this->repository->getById($id);
+    }
+
+    public function store(array $data)
+    {
+        $service = $this->serviceServices->getById($data["service_id"]);
+        $customer = $this->userServices->getById($data["customer_id"]);
+        $schedule = $this->scheduleServices->getById($data["schedule_id"]);
+
+        if (!$service || !$customer || $schedule) {
+            throw new InvalidScheduleException("Esse serviço, horario, ou cliente não existem");
+        }
+
+        if (!$schedule->available) {
+            throw new InvalidScheduleException("Este horario não esta disponivel para agendamento");
+        }
+
+        $this->scheduleServices->setAvailabe($schedule->id, false);
+        return $this->repository->store($data);
     }
 }

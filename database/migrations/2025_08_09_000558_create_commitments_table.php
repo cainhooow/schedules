@@ -22,7 +22,6 @@ return new class extends Migration
                 'closed',
                 'canceled'
             ])->default('scheduled');
-            $table->foreignIdFor(User::class, 'service_provider_id');
             $table->foreignIdFor(User::class, 'customer_id');
             $table->foreignIdFor(AvailableSchedules::class);
             $table->foreignIdFor(Service::class);

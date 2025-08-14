@@ -28,6 +28,10 @@ class ScheduleServices
         return $this->repository->update($scheduleId, $data);
     }
 
+    public function setAvailabe(int $scheduleId, bool $isAvailable) {
+        return $this->repository->setAvailable($scheduleId, $isAvailable);
+    }
+
     public function delete(int $scheduleId)
     {
         return $this->repository->delete($scheduleId);

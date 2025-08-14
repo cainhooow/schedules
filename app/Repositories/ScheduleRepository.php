@@ -50,6 +50,12 @@ class ScheduleRepository implements SchedulesInterface
         return $this->model->find($id)->update($data);
     }
 
+    public function setAvailable(int $id, bool $available)
+    {
+        return $this->model->find($id)
+            ->update(["available" => $available]);
+    }
+
     public function delete(int $id)
     {
         return $this->model->find($id)->delete();
