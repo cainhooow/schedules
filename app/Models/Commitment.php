@@ -7,13 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Commitment extends Model
 {
-    //
     use HasSnowflakeId;
 
     public $incrementing = false;
 
     protected $fillable = [
-        'id',
         'comment',
         'status',
         'customer_id',

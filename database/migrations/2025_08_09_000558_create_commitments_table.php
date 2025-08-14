@@ -23,7 +23,7 @@ return new class extends Migration
                 'canceled'
             ])->default('scheduled');
             $table->foreignIdFor(User::class, 'customer_id');
-            $table->foreignIdFor(AvailableSchedules::class);
+            $table->foreignIdFor(AvailableSchedules::class, 'schedule_id');
             $table->foreignIdFor(Service::class);
             $table->timestamps();
         });

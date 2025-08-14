@@ -30,7 +30,7 @@ class CommitmentServices
         $customer = $this->userServices->getById($data["customer_id"]);
         $schedule = $this->scheduleServices->getById($data["schedule_id"]);
 
-        if (!$service || !$customer || $schedule) {
+        if (!$service || !$customer || !$schedule) {
             throw new InvalidScheduleException("Esse serviço, horario, ou cliente não existem");
         }
 

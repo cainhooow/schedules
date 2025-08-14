@@ -127,7 +127,7 @@ Route::prefix('/v1')->group(function () {
         ->name('services.schedules');
 
     Route::middleware([JwtAuthenticate::class])
-        ->middleware('flags:CAN_CONTRACT_SERVICES')
         ->post('/services/{serviceId}/schedule/{scheduleId}', [ServicesController::class, 'toSchedule'])
+        ->middleware('flags:CAN_CONTRACT_SERVICE')
         ->name('services.schedule');
 });
