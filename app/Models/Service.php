@@ -45,4 +45,8 @@ class Service extends Model
     {
         return $this->hasMany(AvailableSchedules::class);
     }
+
+    public function commitments() {
+        return $this->hasMany(Commitment::class);
+    }
 }

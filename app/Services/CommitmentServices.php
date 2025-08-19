@@ -24,6 +24,14 @@ class CommitmentServices
         return $this->repository->getById($id);
     }
 
+    public function getAllByCustomerId(int $customerId) {
+        return $this->repository->getAllByCustomerId($customerId);
+    }
+
+    public function getAllByServiceId(int $serviceId) {
+        return $this->repository->getAllByServiceId($serviceId);
+    }
+
     public function store(array $data)
     {
         $service = $this->serviceServices->getById($data["service_id"]);

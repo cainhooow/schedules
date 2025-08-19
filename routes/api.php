@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\Account\ProfileController;
 use App\Http\Controllers\Api\Account\Services\SchedulesController;
 use App\Http\Controllers\Api\Account\Services\UserServiceController;
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\CommitmentController;
 use App\Http\Controllers\Api\ServicesController;
 use App\Http\Middleware\JwtAuthenticate;
 use Illuminate\Http\Request;
@@ -115,6 +116,9 @@ Route::prefix('/v1')->group(function () {
                 'services' => 'serviceId',
                 'schedules' => 'scheduleId'
             ]);
+
+        Route::get("/commitments", [CommitmentController::class, "index"])
+            ->name("commitments.index");
     });
 
     Route::get('/services', [ServicesController::class, 'index'])
