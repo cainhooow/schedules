@@ -118,7 +118,9 @@ Route::prefix('/v1')->group(function () {
             ]);
 
         Route::get("/commitments", [CommitmentController::class, "index"])
-            ->name("commitments.index");
+            ->name("me.commitments.index");
+        Route::get("/commitments/{commitmentId}", [CommitmentController::class, "show"])
+            ->name("me.commitments.show");
     });
 
     Route::get('/services', [ServicesController::class, 'index'])

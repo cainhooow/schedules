@@ -22,4 +22,10 @@ class CommitmentController extends Controller
 
         return CommitmentResource::collection($commitments);
     }
+
+    public function show(int $commitmentId)
+    {
+        $commitment = $this->service->getById($commitmentId);
+        return new CommitmentResource($commitment);
+    }
 }
