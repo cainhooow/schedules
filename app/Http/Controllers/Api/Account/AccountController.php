@@ -21,33 +21,33 @@ class AccountController extends Controller
         $type = (string) strtoupper($data['type']);
 
         $user = Auth::user();
-        if ($this->service->userHas($user, Flags::ACCOUNT_COMPLETED_TASKS)) {
+        if ($this->service->userHas($user, Flags::Account_Completed_Tasks)) {
             return response()->json(['message' => 'Você já definiu todos os passos.'], Response::HTTP_UNAUTHORIZED);
         }
 
         try {
             $flagsType = match ($type) {
                 'CUSTOMER' => [
-                    Flags::CUSTOMER,
-                    Flags::CAN_CONTRACT_SERVICES,
-                    Flags::ACCOUNT_TASK_LEVEL_2
+                    Flags::Customer,
+                    Flags::Can_Contract_Services,
+                    Flags::Account_Task_Level_2
                 ],
                 'SERVICE' => [
-                    Flags::SERVICE_PROVIDER,
-                    Flags::CAN_CREATE_SERVICES,
-                    Flags::CAN_UPDATE_SERVICES,
-                    Flags::ACCOUNT_TASK_LEVEL_2
+                    Flags::ServiceProvider,
+                    Flags::Can_Create_Services,
+                    Flags::Can_Update_Services,
+                    Flags::Account_Task_Level_2
                 ],
                 'ENTERPRISE' => [
-                    Flags::ENTERPRISE,
-                    Flags::CAN_CREATE_SERVICES,
-                    Flags::CAN_UPDATE_SERVICES,
-                    Flags::ACCOUNT_TASK_LEVEL_2
+                    Flags::Enterprise,
+                    Flags::Can_Create_Services,
+                    Flags::Can_Update_Services,
+                    Flags::Account_Task_Level_2
                 ],
             };
 
             $this->service->assignToUser($user, $flagsType);
-            $this->service->removeFromUser($user, [Flags::ACCOUNT_TASK_LEVEL_1]);
+            $this->service->removeFromUser($user, [Flags::Account_Task_Level_1]);
 
             return response()->json(['type' => $type], Response::HTTP_OK);
         } catch (Exception $e) {

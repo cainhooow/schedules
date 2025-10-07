@@ -2,18 +2,18 @@
 
 namespace App\Constants;
 
-class Flags
+enum Flags
 {
-    public const CUSTOMER = 'CUSTOMER';
-    public const SERVICE_PROVIDER = 'SERVICE_PROVIDER';
-    public const ENTERPRISE = 'ENTERPRISE';
-    public const ACCOUNT_TASK_LEVEL_1 = 'ACCOUNT_TASK_LEVEL_1';
-    public const ACCOUNT_TASK_LEVEL_2 = 'ACCOUNT_TASK_LEVEL_2';
-    public const ACCOUNT_TASK_LEVEL_3 = 'ACCOUNT_TASK_LEVEL_3';
-    public const ACCOUNT_COMPLETED_TASKS = 'ACCOUNT_COMPLETED_TASKS';
-    public const CAN_CONTRACT_SERVICES = 'CAN_CONTRACT_SERVICE';
-    public const CAN_CREATE_SERVICES = 'CAN_CREATE_SERVICES';
-    public const CAN_UPDATE_SERVICES = 'CAN_UPDATE_SERVICES';
-    public const CAN_UPDATE_USERS = 'CAN_UPDATE_USERS';
-    public const CAN_AUTHENTICATE = 'CAN_AUTHENTICATE';
+    case Customer;
+    case ServiceProvider;
+    case Enterprise;
+    case Account_Task_Level_1;
+    case Account_Task_Level_2;
+    case Account_Task_Level_3;
+    case Account_Completed_Tasks;
+    case Can_Create_Services;
+    case Can_Contract_Services;
+    case Can_Update_Services;
+    case Can_Update_Users;
+    case Can_Authenticate;
 }

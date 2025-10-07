@@ -32,8 +32,8 @@ class AddressServices
             DB::beginTransaction();
             $data = $this->repository->store($data);
 
-            $this->flagsService->removeFromUser($data->user, [Flags::ACCOUNT_TASK_LEVEL_3]);
-            $this->flagsService->assignToUser($data->user, [Flags::ACCOUNT_COMPLETED_TASKS]);
+            $this->flagsService->removeFromUser($data->user, [Flags::Account_Task_Level_3]);
+            $this->flagsService->assignToUser($data->user, [Flags::Account_Completed_Tasks]);
 
             DB::commit();
             return $data;
@@ -78,8 +78,8 @@ class AddressServices
         try {
             DB::beginTransaction();
 
-            $this->flagsService->assignToUser($user, [Flags::ACCOUNT_TASK_LEVEL_3]);
-            $this->flagsService->removeFromUser($user, [Flags::ACCOUNT_COMPLETED_TASKS]);
+            $this->flagsService->assignToUser($user, [Flags::Account_Task_Level_3]);
+            $this->flagsService->removeFromUser($user, [Flags::Account_Completed_Tasks]);
 
             DB::commit();
 

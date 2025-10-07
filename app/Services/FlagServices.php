@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Constants\Flags;
 use App\Models\User;
 use App\Repositories\FlagRepository;
 
@@ -30,7 +31,7 @@ class FlagServices
     /**
      * @param \App\Constants\Flags $flag
      */
-    public function userHas(User $user, string $flag)
+    public function userHas(User $user, Flags $flag)
     {
         return $user->flags()->where('name', $flag)->exists();
     }

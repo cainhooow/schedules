@@ -45,7 +45,7 @@ Route::prefix('/v1')->group(function () {
                 'defineType'
             ])
                 ->name('account.type')
-                ->middleware('flags:ACCOUNT_TASK_LEVEL_1');
+                ->middleware('flags:Account_Task_Level_1');
         });
 
         Route::resource('profile', ProfileController::class, [
@@ -58,7 +58,7 @@ Route::prefix('/v1')->group(function () {
             'store' => 'me.profile.store',
             'update' => 'me.profile.update',
             'destroy' => 'me.profile.destroy',
-        ])->middlewareFor(['store'], 'flags:ACCOUNT_TASK_LEVEL_2');
+        ])->middlewareFor(['store'], 'flags:Account_Task_Level_2');
 
         Route::post('/address/create', [AddressController::class, 'create'])
             ->name('me.address.create')
@@ -91,7 +91,7 @@ Route::prefix('/v1')->group(function () {
                 'update',
                 'destroy'
             ], [
-                'flags:CAN_CREATE_SERVICES,CAN_UPDATE_SERVICES',
+                'flags:Can_Create_Services,Can_Update_Services',
             ])
             ->parameters(['services' => 'serviceId']);
 
@@ -111,7 +111,7 @@ Route::prefix('/v1')->group(function () {
                 'update',
                 'destroy'
             ], [
-                'flags:CAN_CREATE_SERVICES,CAN_UPDATE_SERVICES'
+                'flags:Can_Create_Services,Can_Update_Services'
             ])->parameters([
                 'services' => 'serviceId',
                 'schedules' => 'scheduleId'
@@ -134,6 +134,6 @@ Route::prefix('/v1')->group(function () {
 
     Route::middleware([JwtAuthenticate::class])
         ->post('/services/{serviceId}/schedule/{scheduleId}', [ServicesController::class, 'toSchedule'])
-        ->middleware('flags:CAN_CONTRACT_SERVICE')
+        ->middleware('flags:Can_Contract_Services')
         ->name('services.schedule');
 });
