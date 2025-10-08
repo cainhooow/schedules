@@ -16,7 +16,6 @@ enum Flags
     case Can_Update_Services;
     case Can_Update_Users;
     case Can_Authenticate;
-
     case Local_Account_Provider;
     case Google_Account_Provider;
     case Facebook_Account_Provider;
