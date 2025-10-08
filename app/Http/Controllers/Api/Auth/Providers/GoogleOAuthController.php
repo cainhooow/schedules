@@ -4,16 +4,26 @@ namespace App\Http\Controllers\Api\Auth\Providers;
 
 use App\Constants\Flags;
 use App\Http\Controllers\Controller;
+use App\Mail\AccountCreated;
 use App\Services\FlagServices;
+use App\Services\ProfileServices;
 use App\Services\UserServices;
+use DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
+use Mail;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class GoogleOAuthController extends Controller
 {
-    public function __construct(protected $service = new UserServices, protected $flagsServices = new FlagServices) {}
+    public function __construct(
+        protected $userService = new UserServices(),
+        protected $profileService = new ProfileServices(),
+        protected $flagsServices = new FlagServices()
+    ) {
+    }
 
     /**
      * @OA\Get(
@@ -50,24 +60,32 @@ class GoogleOAuthController extends Controller
      */
     public function callback()
     {
+        DB::beginTransaction();
         try {
             $providerUser = Socialite::driver('google')->stateless()->user();
-            $user = $this->service->getByEmail($providerUser->email);
+            $user = $this->userService->getByEmail($providerUser->email);
 
-            if (! $user) {
+            if (!$user) {
                 $password = Hash::make(Str::random(12));
 
                 $baseUsername = $this->generateUsernameFromName($providerUser->name);
                 $username = $this->generateUniqueUsername($baseUsername);
 
-                $user = $this->service->store([
+                $user = $this->userService->store([
                     'name' => $providerUser->name,
                     'username' => $username,
                     'email' => $providerUser->email,
                     'password' => $password,
                 ]);
 
+                $this->profileService->store([
+                    'name' => $providerUser->name,
+                    'avatar' => $providerUser->avatar,
+                    'user_id' => $user->id
+                ]);
+
                 $this->flagsServices->assignToUser($user, [Flags::Google_Account_Provider]);
+                Mail::to($providerUser->email)->send(new AccountCreated($user));
             }
 
             $accessToken = JWTAuth::fromUser($user);
@@ -80,12 +98,15 @@ class GoogleOAuthController extends Controller
                 60 * 24 * 7
             );
 
+            DB::commit();
+
             return $user->toResource(\App\Http\Resources\UserResource::class)
                 ->additional(['token' => $accessToken])
                 ->response()
                 ->withCookie($cookies['token'])
                 ->withCookie($cookies['refreshToken']);
         } catch (\Exception $e) {
+            DB::rollBack();
             return response()->json([
                 'error' => $e->getMessage(),
             ], 500);
@@ -97,8 +118,8 @@ class GoogleOAuthController extends Controller
         $username = Str::of($name)->ascii()->lower()->__toString();
         $username = preg_replace('/\s+/', '_', $username);
         $username = preg_replace('/[^a-z0-9._]/', '', $username);
-        if (! preg_match('/^[a-z]/', $username)) {
-            $username = 'u'.$username;
+        if (!preg_match('/^[a-z]/', $username)) {
+            $username = 'u' . $username;
         }
 
         return $username;
@@ -109,8 +130,8 @@ class GoogleOAuthController extends Controller
         $username = $base;
         $counter = 1;
 
-        while ($this->service->getByUsername($username)) {
-            $username = $base.$counter;
+        while ($this->userService->getByUsername($username)) {
+            $username = $base . $counter;
             $counter++;
         }
 

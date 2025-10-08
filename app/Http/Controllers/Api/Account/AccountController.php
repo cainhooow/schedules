@@ -12,9 +12,35 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AccountController extends Controller
 {
-    public function __construct(protected $service = new FlagServices()) {}
+    public function __construct(protected $service = new FlagServices())
+    {
+    }
 
-    //
+    /**
+     * @OA\Post(
+     *   path="/api/v1/me/account/type",
+     *   tags={"Conta"},
+     *   summary="Definir o tipo da conta de um usuário",
+     *   @OA\RequestBody(
+     *     required=true,
+     *     @OA\JsonContent( 
+     *       type="string",
+     *       required={"type"},
+     *       @OA\Property(property="type", type="string")
+     *     )
+     *   ),
+     *   @OA\Response(
+     *     response=200,
+     *     description="O tipo da conta foi definido com sucesso",
+     *     @OA\JsonContent(
+     *       type="string",
+     *       @OA\Property(property="type", type="string")
+     *     )
+     *   ),
+     * )
+     * @param \App\Http\Requests\AccountRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function defineType(AccountRequest $request)
     {
         $data = $request->validated();

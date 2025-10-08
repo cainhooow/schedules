@@ -11,7 +11,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ProfileController extends Controller
 {
-    public function __construct(protected $service = new ProfileServices()) {}
+    public function __construct(protected $service = new ProfileServices())
+    {
+    }
     /**
      * @OA\Get(
      *   path="/api/v1/me/profile",
@@ -81,5 +83,7 @@ class ProfileController extends Controller
         );
     }
 
-    public function destroy() {}
+    public function destroy()
+    {
+    }
 }

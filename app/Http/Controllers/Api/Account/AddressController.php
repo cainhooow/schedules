@@ -12,7 +12,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AddressController extends Controller
 {
-    public function __construct(protected $service = new AddressServices()) {}
+    public function __construct(protected $service = new AddressServices())
+    {
+    }
 
     /**
      * @OA\Get(

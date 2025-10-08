@@ -6,6 +6,50 @@
         "version": "1.0.0"
     },
     "paths": {
+        "/api/v1/me/account/type": {
+            "post": {
+                "tags": [
+                    "Conta"
+                ],
+                "summary": "Definir o tipo da conta de um usuário",
+                "operationId": "343073d84da54a6410242aa76493e62c",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "type"
+                                ],
+                                "properties": {
+                                    "type": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "O tipo da conta foi definido com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "type": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/me/address": {
             "get": {
                 "tags": [
@@ -1345,6 +1389,10 @@
         }
     },
     "tags": [
+        {
+            "name": "Conta",
+            "description": "Conta"
+        },
         {
             "name": "Endereços",
             "description": "Endereços"

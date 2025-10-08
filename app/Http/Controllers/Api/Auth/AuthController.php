@@ -8,18 +8,22 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\UserResource;
+use App\Mail\AccountCreated;
 use App\Models\User;
 use App\Services\FlagServices;
 use App\Services\UserServices;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Mail;
 use Symfony\Component\HttpFoundation\Response;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
-    public function __construct(protected $service = new UserServices, protected $flagsService = new FlagServices) {}
+    public function __construct(protected $service = new UserServices, protected $flagsService = new FlagServices)
+    {
+    }
 
     /**
      * @OA\Get(
@@ -72,14 +76,14 @@ class AuthController extends Controller
         $data = $request->validated();
 
         try {
-            if (! $accessToken = JWTAuth::attempt($data)) {
+            if (!$accessToken = JWTAuth::attempt($data)) {
                 return response()->json([
                     'message' => 'Invalid credentials',
                 ], Response::HTTP_UNAUTHORIZED);
             }
 
             $user = $this->service->getByEmail($data['email']);
-            if (! $this->flagsService->userHas($user, Flags::Can_Authenticate)) {
+            if (!$this->flagsService->userHas($user, Flags::Can_Authenticate)) {
                 return response()->json([
                     'message' => 'Você não possui permissão para utilizar esse recurso',
                 ], Response::HTTP_UNAUTHORIZED);
@@ -134,8 +138,9 @@ class AuthController extends Controller
         $data['password'] = Hash::make($data['password']);
 
         $user = $this->service->store($data);
-        $token = JWTAuth::fromUser($user);
+        Mail::to($user->email)->send(new AccountCreated($user));
 
+        $token = JWTAuth::fromUser($user);
         $this->flagsService->assignToUser($user, [Flags::Local_Account_Provider]);
 
         return $user->toResource(UserResource::class)
