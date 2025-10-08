@@ -15,7 +15,6 @@ class AccountController extends Controller
     public function __construct(protected $service = new FlagServices())
     {
     }
-
     /**
      * @OA\Post(
      *   path="/api/v1/me/account/type",
@@ -23,7 +22,7 @@ class AccountController extends Controller
      *   summary="Definir o tipo da conta de um usuário",
      *   @OA\RequestBody(
      *     required=true,
-     *     @OA\JsonContent( 
+     *     @OA\JsonContent(
      *       type="string",
      *       required={"type"},
      *       @OA\Property(property="type", type="string")
