@@ -22,6 +22,12 @@ return [
         'key' => env('RESEND_KEY'),
     ],
 
+    'google' => [
+        'client_id' => env('GOOGLE_OAUTH2_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_OAUTH2_CLIENT_SECRET'),
+        'redirect' => 'http://localhost:8000/api/v1/auth/providers/google/callback',
+    ],
+
     'ses' => [
         'key' => env('AWS_ACCESS_KEY_ID'),
         'secret' => env('AWS_SECRET_ACCESS_KEY'),

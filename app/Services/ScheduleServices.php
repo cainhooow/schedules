@@ -28,7 +28,8 @@ class ScheduleServices
         return $this->repository->update($scheduleId, $data);
     }
 
-    public function setAvailabe(int $scheduleId, bool $isAvailable) {
+    public function setAvailabe(int $scheduleId, bool $isAvailable)
+    {
         return $this->repository->setAvailable($scheduleId, $isAvailable);
     }
 

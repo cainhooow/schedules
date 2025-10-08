@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\Account\ProfileController;
 use App\Http\Controllers\Api\Account\Services\SchedulesController;
 use App\Http\Controllers\Api\Account\Services\UserServiceController;
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\Auth\Providers\GoogleOAuthController;
 use App\Http\Controllers\Api\CommitmentController;
 use App\Http\Controllers\Api\ServicesController;
 use App\Http\Middleware\JwtAuthenticate;
@@ -15,15 +16,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 Route::get(
     '/user',
-    fn(Request $request) =>
-    $request->user()
+    fn (Request $request) => $request->user()
 )->middleware('auth:sanctum');
 
 Route::get(
     '/ping',
-    fn() =>
-    response()->json([
-        'message' => 'pong'
+    fn () => response()->json([
+        'message' => 'pong',
     ], Response::HTTP_OK)
 );
 
@@ -34,15 +33,19 @@ Route::prefix('/v1')->group(function () {
     Route::prefix('/auth')->group(function () {
         Route::post('login', [AuthController::class, 'login'])->name('auth.login');
         Route::post('register', [AuthController::class, 'register'])->name('auth.register');
+
+        Route::get('providers/google', [GoogleOAuthController::class, 'redirect'])->name('oauth.google.redirect');
+        Route::get('providers/google/callback', [GoogleOAuthController::class, 'callback'])->name('oauth.google.callback');
+
     });
 
-    Route::prefix("me")->middleware([JwtAuthenticate::class])->group(function () {
-        Route::get("/", [AuthController::class, "user"]);
+    Route::prefix('me')->middleware([JwtAuthenticate::class])->group(function () {
+        Route::get('/', [AuthController::class, 'user']);
 
         Route::prefix('/account')->group(function () {
             Route::post('type', [
                 AccountController::class,
-                'defineType'
+                'defineType',
             ])
                 ->name('account.type')
                 ->middleware('flags:Account_Task_Level_1');
@@ -52,7 +55,7 @@ Route::prefix('/v1')->group(function () {
             'index',
             'store',
             'update',
-            'destroy'
+            'destroy',
         ])->names([
             'index' => 'me.profile.index',
             'store' => 'me.profile.store',
@@ -68,7 +71,7 @@ Route::prefix('/v1')->group(function () {
             'show',
             'store',
             'update',
-            'destroy'
+            'destroy',
         ])->names([
             'index' => 'me.address.index',
             'show' => 'me.address.show',
@@ -83,13 +86,13 @@ Route::prefix('/v1')->group(function () {
                 'show' => 'me.services.show',
                 'store' => 'me.services.store',
                 'update' => 'me.services.update',
-                'destroy' => 'me.services.destroy'
+                'destroy' => 'me.services.destroy',
             ])
             ->middleware(['owns.service:ServiceServices,serviceId'])
             ->middlewareFor([
                 'store',
                 'update',
-                'destroy'
+                'destroy',
             ], [
                 'flags:Can_Create_Services,Can_Update_Services',
             ])
@@ -101,26 +104,26 @@ Route::prefix('/v1')->group(function () {
                 'show' => 'me.schedules.show',
                 'store' => 'me.schedules.store',
                 'update' => 'me.schedules.update',
-                'destroy' => 'me.schedules.destroy'
+                'destroy' => 'me.schedules.destroy',
             ])
             ->middleware([
-                'owns.service:ServiceServices,serviceId'
+                'owns.service:ServiceServices,serviceId',
             ])
             ->middlewareFor([
                 'store',
                 'update',
-                'destroy'
+                'destroy',
             ], [
-                'flags:Can_Create_Services,Can_Update_Services'
+                'flags:Can_Create_Services,Can_Update_Services',
             ])->parameters([
                 'services' => 'serviceId',
-                'schedules' => 'scheduleId'
+                'schedules' => 'scheduleId',
             ]);
 
-        Route::get("/commitments", [CommitmentController::class, "index"])
-            ->name("me.commitments.index");
-        Route::get("/commitments/{commitmentId}", [CommitmentController::class, "show"])
-            ->name("me.commitments.show");
+        Route::get('/commitments', [CommitmentController::class, 'index'])
+            ->name('me.commitments.index');
+        Route::get('/commitments/{commitmentId}', [CommitmentController::class, 'show'])
+            ->name('me.commitments.show');
     });
 
     Route::get('/services', [ServicesController::class, 'index'])

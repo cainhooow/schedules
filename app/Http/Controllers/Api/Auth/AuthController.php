@@ -69,7 +69,7 @@ class AuthController extends Controller
                 ], Response::HTTP_UNAUTHORIZED);
             }
 
-            $user = User::where('email', $data['email'])->first();
+            $user = $this->service->getByEmail($data['email']);
             if (!$this->flagsService->userHas($user, Flags::Can_Authenticate)) {
                 return response()->json([
                     'message' => 'Você não possui permissão para utilizar esse recurso'

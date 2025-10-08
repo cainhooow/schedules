@@ -19,6 +19,15 @@ class UserServices
         return $this->repository->getById($id);
     }
 
+    public function getByEmail(string $email): ?User
+    {
+        return $this->repository->getByEmail($email);
+    }
+
+    public function getByUsername(string $username): ?User {
+        return $this->repository->getByUsername($username);
+    }
+
     public function store(array $data): User
     {
         $user = $this->repository->store($data);
