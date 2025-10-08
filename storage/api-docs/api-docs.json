@@ -687,6 +687,43 @@
                 }
             }
         },
+        "/api/v1/auth/providers/google": {
+            "get": {
+                "tags": [
+                    "Autenticação",
+                    "OAuth2"
+                ],
+                "summary": "Autorizar Google OAuth2",
+                "operationId": "9e9043d20368a9c42baf0739a6389ddf",
+                "responses": {
+                    "200": {
+                        "description": "Abre a página de seleção de conta google"
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/providers/google/callback": {
+            "get": {
+                "tags": [
+                    "Autenticação",
+                    "OAuth2"
+                ],
+                "summary": "Autenticar Google OAuth2",
+                "operationId": "27b37e8eaf3ade418f99294fbd06beff",
+                "responses": {
+                    "200": {
+                        "description": "Retorna o usuário criado e autenticado pelo provedor google",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/services": {
             "get": {
                 "tags": [
@@ -1327,6 +1364,10 @@
         {
             "name": "Autenticação",
             "description": "Autenticação"
+        },
+        {
+            "name": "OAuth2",
+            "description": "OAuth2"
         },
         {
             "name": "Serviços",

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Api\Auth\Providers;
 
+use App\Constants\Flags;
 use App\Http\Controllers\Controller;
+use App\Services\FlagServices;
 use App\Services\UserServices;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -11,18 +13,45 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class GoogleOAuthController extends Controller
 {
-    public function __construct(protected $service = new UserServices) {}
+    public function __construct(protected $service = new UserServices, protected $flagsServices = new FlagServices) {}
 
+    /**
+     * @OA\Get(
+     *   path="/api/v1/auth/providers/google",
+     *   summary="Autorizar Google OAuth2",
+     *   tags={"Autenticação", "OAuth2"},
+     *
+     *   @OA\Response(
+     *     response=200,
+     *     description="Abre a página de seleção de conta google",
+     *   )
+     * )
+     */
     public function redirect()
     {
         return Socialite::driver('google')->stateless()->redirect();
     }
 
+    /**
+     * @OA\Get(
+     *   path="/api/v1/auth/providers/google/callback",
+     *   summary="Autenticar Google OAuth2",
+     *   tags={"Autenticação", "OAuth2"},
+     *
+     *   @OA\Response(
+     *     response=200,
+     *     description="Retorna o usuário criado e autenticado pelo provedor google",
+     *
+     *     @OA\JsonContent(ref="#/components/schemas/UserResponse")
+     *   )
+     * )
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function callback()
     {
         try {
             $providerUser = Socialite::driver('google')->stateless()->user();
-
             $user = $this->service->getByEmail($providerUser->email);
 
             if (! $user) {
@@ -37,6 +66,8 @@ class GoogleOAuthController extends Controller
                     'email' => $providerUser->email,
                     'password' => $password,
                 ]);
+
+                $this->flagsServices->assignToUser($user, [Flags::Google_Account_Provider]);
             }
 
             $accessToken = JWTAuth::fromUser($user);
