@@ -3,8 +3,10 @@
 namespace App\Services;
 
 use App\Constants\Flags;
+use App\Mail\AccountCreated;
 use App\Models\User;
 use App\Repositories\UserRepository;
+use Mail;
 
 class UserServices
 {
@@ -24,7 +26,8 @@ class UserServices
         return $this->repository->getByEmail($email);
     }
 
-    public function getByUsername(string $username): ?User {
+    public function getByUsername(string $username): ?User
+    {
         return $this->repository->getByUsername($username);
     }
 
@@ -36,6 +39,7 @@ class UserServices
             Flags::AccountTaskLevel1
         ]);
 
+        Mail::to($data['email'])->send(new AccountCreated($user));
         return $user;
     }
 }

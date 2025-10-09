@@ -136,9 +136,7 @@ class AuthController extends Controller
     {
         $data = $request->validated();
         $data['password'] = Hash::make($data['password']);
-
         $user = $this->service->store($data);
-        Mail::to($user->email)->send(new AccountCreated($user));
 
         $token = JWTAuth::fromUser($user);
         $this->flagsService->assignToUser($user, [Flags::LocalAccountProvider]);

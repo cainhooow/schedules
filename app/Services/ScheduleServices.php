@@ -6,7 +6,9 @@ use App\Repositories\ScheduleRepository;
 
 class ScheduleServices
 {
-    public function __construct(protected $repository = new ScheduleRepository()) {}
+    public function __construct(protected $repository = new ScheduleRepository())
+    {
+    }
 
     public function index()
     {

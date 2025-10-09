@@ -14,7 +14,9 @@ class ProfileRepository implements ProfileInterface
         $this->model = new Profile();
     }
 
-    public function index() {}
+    public function index()
+    {
+    }
     public function getByid(int $id)
     {
         return $this->model->find($id);
@@ -30,5 +32,7 @@ class ProfileRepository implements ProfileInterface
         return $this->model->find($id)->update($data);
     }
 
-    public function delete(int $id) {}
+    public function delete(int $id)
+    {
+    }
 }

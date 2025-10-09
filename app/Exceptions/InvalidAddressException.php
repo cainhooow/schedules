@@ -7,5 +7,5 @@ use Exception;
 class InvalidAddressException extends Exception
 {
     //
-    
+
 }

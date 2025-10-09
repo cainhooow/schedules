@@ -16,7 +16,8 @@ class AddressServices
         protected $repository = new AddressRepository(),
         protected $flagsService = new FlagServices(),
         protected $userService = new UserServices(),
-    ) {}
+    ) {
+    }
 
     public function getById(int $id)
     {
@@ -53,7 +54,8 @@ class AddressServices
     {
         $defaultAddress = $address->user->addresses()->where('default', true)->first();
 
-        if (($defaultAddress && $address->id === $defaultAddress->id) ||
+        if (
+            ($defaultAddress && $address->id === $defaultAddress->id) ||
             empty($data['default']) || $data['default'] === false
         ) {
             return $this->repository->update($address->id, $data);

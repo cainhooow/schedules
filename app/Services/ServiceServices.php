@@ -11,7 +11,8 @@ class ServiceServices
     public function __construct(
         protected $repository = new ServiceRepository(),
         protected $addressService = new AddressServices()
-    ) {}
+    ) {
+    }
 
     public function index()
     {

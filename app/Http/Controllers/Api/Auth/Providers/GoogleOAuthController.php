@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api\Auth\Providers;
 
 use App\Constants\Flags;
 use App\Http\Controllers\Controller;
-use App\Mail\AccountCreated;
 use App\Services\FlagServices;
 use App\Services\ProfileServices;
 use App\Services\UserServices;
@@ -83,7 +82,6 @@ class GoogleOAuthController extends Controller
                 ]);
 
                 $this->flagsServices->assignToUser($user, [Flags::GoogleAccountProvider]);
-                Mail::to($providerUser->email)->send(new AccountCreated($user));
             }
 
             $accessToken = JWTAuth::fromUser($user);

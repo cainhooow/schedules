@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Exceptions\InvalidScheduleException;
+use App\Notifications\NewCommitment;
 use App\Repositories\CommitmentRepository;
 
 class CommitmentServices
@@ -12,7 +13,8 @@ class CommitmentServices
         protected ScheduleServices $scheduleServices = new ScheduleServices(),
         protected ServiceServices $serviceServices = new ServiceServices(),
         protected UserServices $userServices = new UserServices(),
-    ) {}
+    ) {
+    }
 
     public function getAll()
     {
@@ -24,11 +26,13 @@ class CommitmentServices
         return $this->repository->getById($id);
     }
 
-    public function getAllByCustomerId(int $customerId) {
+    public function getAllByCustomerId(int $customerId)
+    {
         return $this->repository->getAllByCustomerId($customerId);
     }
 
-    public function getAllByServiceId(int $serviceId) {
+    public function getAllByServiceId(int $serviceId)
+    {
         return $this->repository->getAllByServiceId($serviceId);
     }
 
@@ -47,6 +51,22 @@ class CommitmentServices
         }
 
         $this->scheduleServices->setAvailabe($schedule->id, false);
-        return $this->repository->store($data);
+        $commitment = $this->repository->store($data);
+
+        $customer->notifyNow(new NewCommitment(
+            'client',
+            $customer,
+            $service->user,
+            $commitment
+        ));
+
+        $service->user->notifyNow(new NewCommitment(
+            'provider',
+            $customer,
+            $service->user,
+            $commitment
+        ));
+
+        return $commitment;
     }
 }

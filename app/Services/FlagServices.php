@@ -8,7 +8,9 @@ use App\Repositories\FlagRepository;
 
 class FlagServices
 {
-    public function __construct(protected $repository = new FlagRepository()) {}
+    public function __construct(protected $repository = new FlagRepository())
+    {
+    }
 
     /**
      * @param \App\Constants\Flags[] $flags

@@ -9,7 +9,9 @@ use Illuminate\Support\Facades\DB;
 
 class ProfileServices
 {
-    public function __construct(protected $repository = new ProfileRepository(), protected $service = new FlagServices()) {}
+    public function __construct(protected $repository = new ProfileRepository(), protected $service = new FlagServices())
+    {
+    }
 
     public function getById(int $id)
     {

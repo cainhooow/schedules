@@ -16,7 +16,7 @@ class CommitmentController extends Controller
     //
     public function index(Request $request)
     {
-        $commitments = $this->flagService->userHas(Auth::user(), Flags::SERVICE_PROVIDER)
+        $commitments = $this->flagService->userHas(Auth::user(), Flags::ServiceProvider)
             ? Auth::user()->services->flatMap->commitments
             : Auth::user()->commitments;
 
