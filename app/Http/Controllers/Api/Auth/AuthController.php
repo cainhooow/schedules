@@ -83,7 +83,7 @@ class AuthController extends Controller
             }
 
             $user = $this->service->getByEmail($data['email']);
-            if (!$this->flagsService->userHas($user, Flags::Can_Authenticate)) {
+            if (!$this->flagsService->userHas($user, Flags::CanAuthenticate)) {
                 return response()->json([
                     'message' => 'Você não possui permissão para utilizar esse recurso',
                 ], Response::HTTP_UNAUTHORIZED);
@@ -141,7 +141,7 @@ class AuthController extends Controller
         Mail::to($user->email)->send(new AccountCreated($user));
 
         $token = JWTAuth::fromUser($user);
-        $this->flagsService->assignToUser($user, [Flags::Local_Account_Provider]);
+        $this->flagsService->assignToUser($user, [Flags::LocalAccountProvider]);
 
         return $user->toResource(UserResource::class)
             ->additional(['token' => $token]);

@@ -32,8 +32,8 @@ class UserServices
     {
         $user = $this->repository->store($data);
         $this->flagService->assignToUser($user, [
-            Flags::Can_Authenticate,
-            Flags::Account_Task_Level_1
+            Flags::CanAuthenticate,
+            Flags::AccountTaskLevel1
         ]);
 
         return $user;

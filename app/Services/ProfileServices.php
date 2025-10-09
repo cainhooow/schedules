@@ -22,8 +22,8 @@ class ProfileServices
             DB::beginTransaction();
 
             $data = $this->repository->store($data);
-            $this->service->assignToUser($data->user, [Flags::Account_Task_Level_3]);
-            $this->service->removeFromUser($data->user, [Flags::Account_Task_Level_2]);
+            $this->service->assignToUser($data->user, [Flags::AccountTaskLevel3]);
+            $this->service->removeFromUser($data->user, [Flags::AccountTaskLevel2]);
 
             DB::commit();
             return $data;

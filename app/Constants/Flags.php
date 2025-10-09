@@ -7,16 +7,16 @@ enum Flags
     case Customer;
     case ServiceProvider;
     case Enterprise;
-    case Account_Task_Level_1;
-    case Account_Task_Level_2;
-    case Account_Task_Level_3;
-    case Account_Completed_Tasks;
-    case Can_Create_Services;
-    case Can_Contract_Services;
-    case Can_Update_Services;
-    case Can_Update_Users;
-    case Can_Authenticate;
-    case Local_Account_Provider;
-    case Google_Account_Provider;
-    case Facebook_Account_Provider;
+    case AccountTaskLevel1;
+    case AccountTaskLevel2;
+    case AccountTaskLevel3;
+    case AccountCompletedTasks;
+    case CanCreateServices;
+    case CanContractServices;
+    case CanUpdateServices;
+    case CanUpdateUsers;
+    case CanAuthenticate;
+    case LocalAccountProvider;
+    case GoogleAccountProvider;
+    case FacebookAccountProvider;
 }

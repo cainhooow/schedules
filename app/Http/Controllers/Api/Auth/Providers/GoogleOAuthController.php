@@ -82,7 +82,7 @@ class GoogleOAuthController extends Controller
                     'user_id' => $user->id
                 ]);
 
-                $this->flagsServices->assignToUser($user, [Flags::Google_Account_Provider]);
+                $this->flagsServices->assignToUser($user, [Flags::GoogleAccountProvider]);
                 Mail::to($providerUser->email)->send(new AccountCreated($user));
             }
 

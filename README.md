@@ -8,8 +8,9 @@
 
 O sistema permite que usuários se cadastrem como:
 
--   **CUSTOMER** – usuários que contratam serviços
--   **SERVICE_PROVIDER** – usuários que oferecem serviços
+-   **Customer** – usuários que contratam serviços
+-   **ServiceProvider** – usuários que oferecem serviços
+-   **Enterprise** - empresas
 
 Essa definição é feita por meio de um sistema de **flags**, que são atribuídas progressivamente conforme o usuário avança nas etapas do cadastro.
 
@@ -19,23 +20,22 @@ Essa definição é feita por meio de um sistema de **flags**, que são atribuí
 
 O processo de cadastro é dividido em **três níveis de tarefa**, cada um associado a uma flag específica. Essas flags também controlam o acesso a funcionalidades do sistema.
 
-### ✅ `ACCOUNT_TASK_LEVEL_1` – Definir tipo de conta
-
--   O usuário escolhe se será um `CUSTOMER` ou `SERVICE_PROVIDER`.
+### ✅ `AccountTaskLevel1` – Definir tipo de conta
+-   O usuário escolhe se será um `Customer` ou `ServiceProvider`.
 -   Flags atribuídas:
-    -   `CUSTOMER` → recebe `CAN_CONTRACT_SERVICES`
-    -   `SERVICE_PROVIDER` → recebe `CAN_CREATE_SERVICES` e `CAN_UPDATE_SERVICES`
+    -   `Customer` → recebe `CanContractServices`
+    -   `ServiceProvider` → recebe `CanCreateService`
 
-### ✅ `ACCOUNT_TASK_LEVEL_2` – Criação do perfil
+### ✅ `AccountTaskLevel2` – Criação do perfil
 
 -   O usuário preenche dados como nome público, nome do negócio (caso prestador), biografia e avatar.
--   Ao concluir, recebe automaticamente a flag `ACCOUNT_TASK_LEVEL_3`.
+-   Ao concluir, recebe automaticamente a flag `AccountTaskLevel2`.
 
-### ✅ `ACCOUNT_TASK_LEVEL_3` – Definir endereço padrão
+### ✅ `AccountTaskLevel3` – Definir endereço padrão
 
 -   O usuário informa pelo menos um endereço. Isso permitirá futuramente a recomendação de serviços com base em localização (cidade/estado).
 
-Ao concluir todas as etapas, o usuário recebe a flag final: `ACCOUNT_COMPLETED_TASKS`.
+Ao concluir todas as etapas, o usuário recebe a flag final: `AccountCompletedTasks`.
 
 ---
 

@@ -16,12 +16,12 @@ use Symfony\Component\HttpFoundation\Response;
 
 Route::get(
     '/user',
-    fn (Request $request) => $request->user()
+    fn(Request $request) => $request->user()
 )->middleware('auth:sanctum');
 
 Route::get(
     '/ping',
-    fn () => response()->json([
+    fn() => response()->json([
         'message' => 'pong',
     ], Response::HTTP_OK)
 );
@@ -48,7 +48,7 @@ Route::prefix('/v1')->group(function () {
                 'defineType',
             ])
                 ->name('account.type')
-                ->middleware('flags:Account_Task_Level_1');
+                ->middleware('flags:AccountTaskLevel1');
         });
 
         Route::resource('profile', ProfileController::class, [
@@ -57,15 +57,15 @@ Route::prefix('/v1')->group(function () {
             'update',
             'destroy',
         ])->names([
-            'index' => 'me.profile.index',
-            'store' => 'me.profile.store',
-            'update' => 'me.profile.update',
-            'destroy' => 'me.profile.destroy',
-        ])->middlewareFor(['store'], 'flags:Account_Task_Level_2');
+                    'index' => 'me.profile.index',
+                    'store' => 'me.profile.store',
+                    'update' => 'me.profile.update',
+                    'destroy' => 'me.profile.destroy',
+                ])->middlewareFor(['store'], 'flags:AccountTaskLevel2');
 
         Route::post('/address/create', [AddressController::class, 'create'])
             ->name('me.address.create')
-            ->middleware('flags:ACCOUNT_TASK_LEVEL_3');
+            ->middleware('flags:AccountTaskLevel3');
         Route::resource('address', AddressController::class, [
             'index',
             'show',
@@ -73,12 +73,12 @@ Route::prefix('/v1')->group(function () {
             'update',
             'destroy',
         ])->names([
-            'index' => 'me.address.index',
-            'show' => 'me.address.show',
-            'store' => 'me.address.store',
-            'update' => 'me.address.update',
-            'destroy' => 'me.address.destroy',
-        ])->parameters(['address' => 'addressId']);
+                    'index' => 'me.address.index',
+                    'show' => 'me.address.show',
+                    'store' => 'me.address.store',
+                    'update' => 'me.address.update',
+                    'destroy' => 'me.address.destroy',
+                ])->parameters(['address' => 'addressId']);
 
         Route::resource('services', UserServiceController::class)
             ->names([
@@ -94,7 +94,7 @@ Route::prefix('/v1')->group(function () {
                 'update',
                 'destroy',
             ], [
-                'flags:Can_Create_Services,Can_Update_Services',
+                'flags:CanCreateServices,CanUpdateServices',
             ])
             ->parameters(['services' => 'serviceId']);
 
@@ -114,11 +114,11 @@ Route::prefix('/v1')->group(function () {
                 'update',
                 'destroy',
             ], [
-                'flags:Can_Create_Services,Can_Update_Services',
+                'flags:CanCreateServices,CanUpdateServices',
             ])->parameters([
-                'services' => 'serviceId',
-                'schedules' => 'scheduleId',
-            ]);
+                    'services' => 'serviceId',
+                    'schedules' => 'scheduleId',
+                ]);
 
         Route::get('/commitments', [CommitmentController::class, 'index'])
             ->name('me.commitments.index');
@@ -137,6 +137,6 @@ Route::prefix('/v1')->group(function () {
 
     Route::middleware([JwtAuthenticate::class])
         ->post('/services/{serviceId}/schedule/{scheduleId}', [ServicesController::class, 'toSchedule'])
-        ->middleware('flags:Can_Contract_Services')
+        ->middleware('flags:CanContractServices')
         ->name('services.schedule');
 });
