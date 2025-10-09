@@ -10,7 +10,6 @@ use App\Services\ProfileServices;
 use App\Services\UserServices;
 use DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 use Mail;
@@ -72,7 +71,6 @@ class GoogleOAuthController extends Controller
                 $username = $this->generateUniqueUsername($baseUsername);
 
                 $user = $this->userService->store([
-                    'name' => $providerUser->name,
                     'username' => $username,
                     'email' => $providerUser->email,
                     'password' => $password,
