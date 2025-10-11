@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Api\Auth\Providers;
 
 use App\Constants\Flags;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use App\Services\FlagServices;
 use App\Services\ProfileServices;
 use App\Services\UserServices;
 use DB;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 use Mail;
@@ -94,7 +94,7 @@ class GoogleOAuthController extends Controller
 
             DB::commit();
 
-            return $user->toResource(\App\Http\Resources\UserResource::class)
+            return $user->toResource(UserResource::class)
                 ->additional(['token' => $accessToken])
                 ->response()
                 ->withCookie($cookies['token'])
