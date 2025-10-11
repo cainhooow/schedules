@@ -11,6 +11,7 @@ use App\Http\Resources\UserResource;
 use App\Services\FlagServices;
 use App\Services\UserServices;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -41,7 +42,6 @@ class AuthController extends Controller
     public function user()
     {
         $user = $this->service->getById(Auth::user()->id);
-
         return new UserResource($user);
     }
 
@@ -100,6 +100,7 @@ class AuthController extends Controller
                 ->withCookie($cookies['token'])
                 ->withCookie($cookies['refreshToken']);
         } catch (JWTException $e) {
+            Log::error("AuthLocal failed to authenticate user. Error: {$e->getMessage()}");
             return response()->json([
                 'message' => 'Invalid token',
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
@@ -132,10 +133,11 @@ class AuthController extends Controller
     {
         $data = $request->validated();
         $user = $this->service->store($data);
-        
         $token = JWTAuth::fromUser($user);
 
         $this->flagsService->assignToUser($user, [Flags::LocalAccountProvider]);
+        
+        Log::info("New user as created with AuthLocal: {$user->email}");
         return $user->toResource(UserResource::class)
             ->additional(['token' => $token]);
     }

@@ -20,9 +20,8 @@ class ProfileServices
 
     public function store(array $data)
     {
+        DB::beginTransaction();
         try {
-            DB::beginTransaction();
-
             $data = $this->repository->store($data);
             $this->service->assignToUser($data->user, [Flags::AccountTaskLevel3]);
             $this->service->removeFromUser($data->user, [Flags::AccountTaskLevel2]);

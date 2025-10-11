@@ -5,14 +5,19 @@ namespace App\Http\Controllers\Api\Account;
 use App\Constants\Flags;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AccountRequest;
+use App\Http\Requests\ForgotPasswdRequest;
 use App\Services\FlagServices;
+use App\Services\UserServices;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
 
 class AccountController extends Controller
 {
-    public function __construct(protected $service = new FlagServices())
+    public function __construct(protected $userService = new UserServices(), protected $flagsService = new FlagServices())
     {
     }
     /**
@@ -46,7 +51,7 @@ class AccountController extends Controller
         $type = (string) strtoupper($data['type']);
 
         $user = Auth::user();
-        if ($this->service->userHas($user, Flags::AccountCompletedTasks)) {
+        if ($this->flagsService->userHas($user, Flags::AccountCompletedTasks)) {
             return response()->json(['message' => 'Você já definiu todos os passos.'], Response::HTTP_UNAUTHORIZED);
         }
 
@@ -71,12 +76,37 @@ class AccountController extends Controller
                 ],
             };
 
-            $this->service->assignToUser($user, $flagsType);
-            $this->service->removeFromUser($user, [Flags::AccountTaskLevel1]);
+            $this->flagsService->assignToUser($user, $flagsType);
+            $this->flagsService->removeFromUser($user, [Flags::AccountTaskLevel1]);
 
             return response()->json(['type' => $type], Response::HTTP_OK);
         } catch (Exception $e) {
             return response()->json(['error' => true, 'message' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
+    }
+
+    public function forgotPassword(ForgotPasswdRequest $request)
+    {
+        $data = $request->validated();
+        $status = Password::sendResetLink($data);
+
+        if ($status == Password::RESET_LINK_SENT) {
+            return [
+                'success' => true,
+                'message' => 'Enviamos um e-mail para o informado, verifique sua caixa de entrada'
+            ];
+        }
+
+        throw ValidationException::withMessages([
+            'email' => [trans($status)]
+        ]);
+    }
+
+    public function resetPassword()
+    {
+        return response()->json([
+            'success' => true,
+            'message' => 'x'
+        ]);
     }
 }

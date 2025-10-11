@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\Constants\JwtSessions;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
@@ -40,6 +41,7 @@ class JwtAuthenticate
         } catch (TokenInvalidException $e) {
             return response()->json(['error' => 'token_invalid'], Response::HTTP_UNAUTHORIZED);
         } catch (JWTException $e) {
+            Log::error("JWtAuthenticate Middleware Error: {$e->getMessage()}");
             return response()->json(['error' => 'token_error', 'message' => $e->getMessage()], Response::HTTP_UNAUTHORIZED);
         }
 

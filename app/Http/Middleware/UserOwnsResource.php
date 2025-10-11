@@ -50,6 +50,8 @@ class UserOwnsResource
 
         $ownerId = data_get($model, $ownerField);
         if ($ownerId !== Auth::user()->id) {
+            $email = Auth::user()->email;
+            Log::warning("User {$email} attempted to modify a resource that does not belong to him. Successfully blocked!");
             return response()->json([
                 'message' => "Acesso negado ao recurso solicitado"
             ], Response::HTTP_FORBIDDEN);

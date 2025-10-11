@@ -8,10 +8,10 @@ use App\Http\Resources\UserResource;
 use App\Services\FlagServices;
 use App\Services\ProfileServices;
 use App\Services\UserServices;
-use DB;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
-use Mail;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class GoogleOAuthController extends Controller
@@ -79,6 +79,7 @@ class GoogleOAuthController extends Controller
                     'user_id' => $user->id
                 ]);
 
+                Log::info("New user as created with GoogleOAuth2: {$user->email}");
                 $this->flagsServices->assignToUser($user, [Flags::GoogleAccountProvider]);
             }
 
@@ -100,6 +101,7 @@ class GoogleOAuthController extends Controller
                 ->withCookie($cookies['token'])
                 ->withCookie($cookies['refreshToken']);
         } catch (\Exception $e) {
+            Log::error("GoogleOAuth2 Error: {$e->getMessage()}");
             DB::rollBack();
             return response()->json([
                 'error' => $e->getMessage(),

@@ -29,8 +29,8 @@ class AddressServices
         // para o processo de criação da conta, o primeiro endereço é padrão.
         $data['default'] = true;
 
+        DB::beginTransaction();
         try {
-            DB::beginTransaction();
             $data = $this->repository->store($data);
 
             $this->flagsService->removeFromUser($data->user, [Flags::AccountTaskLevel3]);

@@ -33,6 +33,8 @@ Route::prefix('/v1')->group(function () {
     Route::prefix('/auth')->group(function () {
         Route::post('login', [AuthController::class, 'login'])->name('auth.login');
         Route::post('register', [AuthController::class, 'register'])->name('auth.register');
+        Route::post('forgot-password', [AccountController::class, 'forgotPassword'])->name('auth.account.forgot-password');
+        Route::post('reset-password', [AccountController::class, 'resetPassword'])->name('auth.account.reset-password');
 
         Route::get('providers/google', [GoogleOAuthController::class, 'redirect'])->name('oauth.google.redirect');
         Route::get('providers/google/callback', [GoogleOAuthController::class, 'callback'])->name('oauth.google.callback');
