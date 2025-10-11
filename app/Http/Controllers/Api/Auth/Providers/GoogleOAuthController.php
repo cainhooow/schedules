@@ -64,15 +64,13 @@ class GoogleOAuthController extends Controller
             $user = $this->userService->getByEmail($providerUser->email);
 
             if (!$user) {
-                $password = Hash::make(Str::random(12));
-
                 $baseUsername = $this->generateUsernameFromName($providerUser->name);
                 $username = $this->generateUniqueUsername($baseUsername);
 
                 $user = $this->userService->store([
                     'username' => $username,
                     'email' => $providerUser->email,
-                    'password' => $password,
+                    'password' => Str::random(12),
                 ]);
 
                 $this->profileService->store([
@@ -115,7 +113,7 @@ class GoogleOAuthController extends Controller
         $username = preg_replace('/\s+/', '_', $username);
         $username = preg_replace('/[^a-z0-9._]/', '', $username);
         if (!preg_match('/^[a-z]/', $username)) {
-            $username = 'u' . $username;
+            $username = "u{$username}";
         }
 
         return $username;
@@ -127,7 +125,7 @@ class GoogleOAuthController extends Controller
         $counter = 1;
 
         while ($this->userService->getByUsername($username)) {
-            $username = $base . $counter;
+            $username = "{$base}{$counter}";
             $counter++;
         }
 

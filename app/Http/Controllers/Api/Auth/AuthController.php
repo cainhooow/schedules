@@ -135,12 +135,11 @@ class AuthController extends Controller
     public function register(RegisterRequest $request)
     {
         $data = $request->validated();
-        $data['password'] = Hash::make($data['password']);
         $user = $this->service->store($data);
-
+        
         $token = JWTAuth::fromUser($user);
-        $this->flagsService->assignToUser($user, [Flags::LocalAccountProvider]);
 
+        $this->flagsService->assignToUser($user, [Flags::LocalAccountProvider]);
         return $user->toResource(UserResource::class)
             ->additional(['token' => $token]);
     }

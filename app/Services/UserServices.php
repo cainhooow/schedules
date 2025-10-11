@@ -6,6 +6,7 @@ use App\Constants\Flags;
 use App\Mail\AccountCreated;
 use App\Models\User;
 use App\Repositories\UserRepository;
+use Hash;
 use Mail;
 
 class UserServices
@@ -33,6 +34,8 @@ class UserServices
 
     public function store(array $data): User
     {
+        $data['password'] = Hash::make($data['password']);
+
         $user = $this->repository->store($data);
         $this->flagService->assignToUser($user, [
             Flags::CanAuthenticate,
