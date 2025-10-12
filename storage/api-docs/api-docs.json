@@ -50,6 +50,54 @@
                 }
             }
         },
+        "/api/v1/auth/forgot-password": {
+            "post": {
+                "tags": [
+                    "Conta"
+                ],
+                "summary": "Solicitar um token de reset de senha",
+                "operationId": "5a3547cf1d44893d00550ba0dfca868d",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ForgotPasswordRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/reset-password": {
+            "post": {
+                "tags": [
+                    "Conta"
+                ],
+                "summary": "Resetar senha com o token",
+                "operationId": "e4f6c92d367043ca32e1d4307e49e453",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ResetPasswordRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
         "/api/v1/me/address": {
             "get": {
                 "tags": [
@@ -976,6 +1024,21 @@
                 },
                 "type": "object"
             },
+            "ForgotPasswordRequest": {
+                "title": "Request-Body ForgotPassword",
+                "required": [
+                    "email"
+                ],
+                "properties": {
+                    "email": {
+                        "description": "Endereço de e-email válido cadastrado",
+                        "type": "string",
+                        "format": "email",
+                        "example": "usuario@example.com"
+                    }
+                },
+                "type": "object"
+            },
             "LoginRequest": {
                 "title": "Request-Body Login",
                 "required": [
@@ -1053,6 +1116,43 @@
                     },
                     "password": {
                         "description": "Senha com no mínimo 6 caracteres",
+                        "type": "string",
+                        "format": "password",
+                        "minLength": 6,
+                        "example": "senhaSegura123"
+                    }
+                },
+                "type": "object"
+            },
+            "ResetPasswordRequest": {
+                "title": "Request-Body ResetPassword",
+                "required": [
+                    "token",
+                    "email",
+                    "password",
+                    "password_confirmation"
+                ],
+                "properties": {
+                    "token": {
+                        "description": "Token de reset temporario para resetar a senha",
+                        "type": "string",
+                        "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-QV30"
+                    },
+                    "email": {
+                        "description": "Endereço de e-mail válido cadastrado",
+                        "type": "string",
+                        "format": "email",
+                        "example": "usuario@example.com"
+                    },
+                    "password": {
+                        "description": "Senha com no mínimo 6 caracteres",
+                        "type": "string",
+                        "format": "password",
+                        "minLength": 6,
+                        "example": "senhaSegura123"
+                    },
+                    "password_confirmation": {
+                        "description": "Confirmação de password com no mínimo 6 caracteres",
                         "type": "string",
                         "format": "password",
                         "minLength": 6,

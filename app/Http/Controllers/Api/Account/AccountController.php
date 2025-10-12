@@ -94,16 +94,11 @@ class AccountController extends Controller
      *   summary="Solicitar um token de reset de senha",
      *   @OA\RequestBody(
      *     required=true,
-     *     @OA\JsonContent(
-     *       type="string",
-     *       required={"name"},
-     *       @OA\Property(property="name", type="string")
-     *     )
+     *     @OA\JsonContent(ref="#/components/schemas/ForgotPasswordRequest")
      *   ),
      *   @OA\Response(
      *     response=200,
      *     description="OK",
-     *     @OA\JsonContent(ref="#/components/schemas/Resource")
      *   )
      * )
      * @param \App\Http\Requests\ForgotPasswdRequest $request
@@ -134,16 +129,11 @@ class AccountController extends Controller
      *   summary="Resetar senha com o token",
      *   @OA\RequestBody(
      *     required=true,
-     *     @OA\JsonContent(
-     *       type="string",
-     *       required={"name"},
-     *       @OA\Property(property="name", type="string")
-     *     )
+     *     @OA\JsonContent(ref="#/components/schemas/ResetPasswordRequest")
      *   ),
      *   @OA\Response(
      *     response=200,
      *     description="OK",
-     *     @OA\JsonContent(ref="#/components/schemas/Resource")
      *   )
      * )
      * @param \App\Http\Requests\ResetPasswdRequest $request

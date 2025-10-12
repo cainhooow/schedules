@@ -7,7 +7,21 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Symfony\Component\HttpFoundation\Response;
 
-
+/**
+ * @OA\Schema(
+ *   schema="ForgotPasswordRequest",
+ *   title="Request-Body ForgotPassword",
+ *   type="object",
+ *   required={"email"},
+ *   @OA\Property(
+ *     property="email",
+ *     type="string",
+ *     format="email",
+ *     example="usuario@example.com",
+ *     description="Endereço de e-email válido cadastrado"
+ *   )
+ * )
+ */
 class ForgotPasswdRequest extends FormRequest
 {
     /**
