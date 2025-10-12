@@ -8,11 +8,11 @@ use Illuminate\Database\Seeder;
 
 class FlagsSeed extends Seeder
 {
-    public function run(): void
-    {
-        $flags = Flags::cases();
-        foreach ($flags as $flag) {
-            Flag::create(['name' => $flag]);
-        }
-    }
+     public function run(): void
+     {
+          $flags = Flags::cases();
+          foreach ($flags as $flag) {
+               Flag::create(['name' => $flag]);
+          }
+     }
 }
