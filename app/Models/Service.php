@@ -9,45 +9,45 @@ use Illuminate\Database\Eloquent\Model;
 
 class Service extends Model
 {
-    use HasSnowflakeId;
+     use HasSnowflakeId;
 
-    public $incrementing = false;
-    protected $fillable = [
-        'name',
-        'description',
-        'price',
-        'min_price',
-        'max_price',
-        'address_id',
-        'user_id'
-    ];
+     public $incrementing = false;
+     protected $fillable = [
+          'name',
+          'description',
+          'price',
+          'min_price',
+          'max_price',
+          'address_id',
+          'user_id'
+     ];
 
-    protected $casts = [
-        'id' => 'integer',
-        'user_id' => 'integer',
-        'address_id' => 'integer',
-        'price' => 'float',
-        'max_price' => 'float',
-        'min_price' => 'float',
-    ];
+     protected $casts = [
+          'id' => 'integer',
+          'user_id' => 'integer',
+          'address_id' => 'integer',
+          'price' => 'float',
+          'max_price' => 'float',
+          'min_price' => 'float',
+     ];
 
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+     public function user()
+     {
+          return $this->belongsTo(User::class);
+     }
 
-    public function address()
-    {
-        return $this->belongsTo(Address::class);
-    }
+     public function address()
+     {
+          return $this->belongsTo(Address::class);
+     }
 
-    public function schedules()
-    {
-        return $this->hasMany(AvailableSchedules::class);
-    }
+     public function schedules()
+     {
+          return $this->hasMany(AvailableSchedules::class);
+     }
 
-    public function commitments()
-    {
-        return $this->hasMany(Commitment::class);
-    }
+     public function commitments()
+     {
+          return $this->hasMany(Commitment::class);
+     }
 }

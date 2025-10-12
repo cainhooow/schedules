@@ -10,18 +10,18 @@ use Illuminate\Database\Eloquent\Model;
 #[UsePolicy(SchedulePolicy::class)]
 class AvailableSchedules extends Model
 {
-    use HasSnowflakeId;
+     use HasSnowflakeId;
 
-    protected $fillable = [
-        'day_of_week',
-        'start_time',
-        'end_time',
-        'available',
-        'service_id'
-    ];
+     protected $fillable = [
+          'day_of_week',
+          'start_time',
+          'end_time',
+          'available',
+          'service_id'
+     ];
 
-    public function service()
-    {
-        return $this->belongsTo(Service::class);
-    }
+     public function service()
+     {
+          return $this->belongsTo(Service::class);
+     }
 }

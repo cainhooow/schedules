@@ -3,25 +3,25 @@
 namespace App\Repositories;
 
 use App\Constants\Flags;
-use App\Interfaces\FlagInterface;
+use App\Interfaces\FlagRepositoryInterface;
 use App\Models\Flag;
 
-class FlagRepository implements FlagInterface
+class FlagRepository implements FlagRepositoryInterface
 {
-    private $model;
+     private $model;
 
-    public function __construct()
-    {
-        $this->model = new Flag();
-    }
+     public function __construct()
+     {
+          $this->model = new Flag();
+     }
 
-    public function selectFlags(array $flags)
-    {
-        return $this->model->whereIn('name', $flags);
-    }
+     public function selectFlags(array $flags)
+     {
+          return $this->model->whereIn('name', $flags);
+     }
 
-    public function selectIdsByName(array $flags)
-    {
-        return $this->model->whereIn('name', $flags)->pluck('id');
-    }
+     public function selectIdsByName(array $flags)
+     {
+          return $this->model->whereIn('name', $flags)->pluck('id');
+     }
 }

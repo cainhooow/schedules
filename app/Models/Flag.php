@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Flag extends Model
 {
-    use HasSnowflakeId;
+     use HasSnowflakeId;
 
-    public $incrementing = false;
-    public function users()
-    {
-        return $this->belongsToMany(User::class);
-    }
+     public $incrementing = false;
+     public function users()
+     {
+          return $this->belongsToMany(User::class);
+     }
 }
