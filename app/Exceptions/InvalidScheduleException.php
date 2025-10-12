@@ -6,5 +6,5 @@ use Exception;
 
 class InvalidScheduleException extends Exception
 {
-    //
+     //
 }

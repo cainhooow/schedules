@@ -16,121 +16,121 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class GoogleOAuthController extends Controller
 {
-    public function __construct(
-        protected $userService = new UserServices(),
-        protected $profileService = new ProfileServices(),
-        protected $flagsServices = new FlagServices()
-    ) {
-    }
+     public function __construct(
+          protected $userService = new UserServices(),
+          protected $profileService = new ProfileServices(),
+          protected $flagsServices = new FlagServices()
+     ) {
+     }
 
-    /**
-     * @OA\Get(
-     *   path="/api/v1/auth/providers/google",
-     *   summary="Autorizar Google OAuth2",
-     *   tags={"Autenticação", "OAuth2"},
-     *
-     *   @OA\Response(
-     *     response=200,
-     *     description="Abre a página de seleção de conta google",
-     *   )
-     * )
-     */
-    public function redirect()
-    {
-        return Socialite::driver('google')->stateless()->redirect();
-    }
+     /**
+      * @OA\Get(
+      *   path="/api/v1/auth/providers/google",
+      *   summary="Autorizar Google OAuth2",
+      *   tags={"Autenticação", "OAuth2"},
+      *
+      *   @OA\Response(
+      *     response=200,
+      *     description="Abre a página de seleção de conta google",
+      *   )
+      * )
+      */
+     public function redirect()
+     {
+          return Socialite::driver('google')->stateless()->redirect();
+     }
 
-    /**
-     * @OA\Get(
-     *   path="/api/v1/auth/providers/google/callback",
-     *   summary="Autenticar Google OAuth2",
-     *   tags={"Autenticação", "OAuth2"},
-     *
-     *   @OA\Response(
-     *     response=200,
-     *     description="Retorna o usuário criado e autenticado pelo provedor google",
-     *
-     *     @OA\JsonContent(ref="#/components/schemas/UserResponse")
-     *   )
-     * )
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function callback()
-    {
-        DB::beginTransaction();
-        try {
-            $providerUser = Socialite::driver('google')->stateless()->user();
-            $user = $this->userService->getByEmail($providerUser->email);
+     /**
+      * @OA\Get(
+      *   path="/api/v1/auth/providers/google/callback",
+      *   summary="Autenticar Google OAuth2",
+      *   tags={"Autenticação", "OAuth2"},
+      *
+      *   @OA\Response(
+      *     response=200,
+      *     description="Retorna o usuário criado e autenticado pelo provedor google",
+      *
+      *     @OA\JsonContent(ref="#/components/schemas/UserResponse")
+      *   )
+      * )
+      *
+      * @return \Illuminate\Http\JsonResponse
+      */
+     public function callback()
+     {
+          DB::beginTransaction();
+          try {
+               $providerUser = Socialite::driver('google')->stateless()->user();
+               $user = $this->userService->getByEmail($providerUser->email);
 
-            if (!$user) {
-                $baseUsername = $this->generateUsernameFromName($providerUser->name);
-                $username = $this->generateUniqueUsername($baseUsername);
+               if (!$user) {
+                    $baseUsername = $this->generateUsernameFromName($providerUser->name);
+                    $username = $this->generateUniqueUsername($baseUsername);
 
-                $user = $this->userService->store([
-                    'username' => $username,
-                    'email' => $providerUser->email,
-                    'password' => Str::random(12),
-                ]);
+                    $user = $this->userService->store([
+                         'username' => $username,
+                         'email' => $providerUser->email,
+                         'password' => Str::random(12),
+                    ]);
 
-                $this->profileService->store([
-                    'name' => $providerUser->name,
-                    'avatar' => $providerUser->avatar,
-                    'user_id' => $user->id
-                ]);
+                    $this->profileService->store([
+                         'name' => $providerUser->name,
+                         'avatar' => $providerUser->avatar,
+                         'user_id' => $user->id
+                    ]);
 
-                Log::info("New user as created with GoogleOAuth2: {$user->email}");
-                $this->flagsServices->assignToUser($user, [Flags::GoogleAccountProvider]);
-            }
+                    Log::info("New user as created with GoogleOAuth2: {$user->email}");
+                    $this->flagsServices->assignToUser($user, [Flags::GoogleAccountProvider]);
+               }
 
-            $accessToken = JWTAuth::fromUser($user);
-            $refreshToken = JWTAuth::claims(['refresh' => true])->fromUser($user);
+               $accessToken = JWTAuth::fromUser($user);
+               $refreshToken = JWTAuth::claims(['refresh' => true])->fromUser($user);
 
-            $cookies = \App\Helpers\CookieHelper::create(
-                $accessToken,
-                $refreshToken,
-                15,
-                60 * 24 * 7
-            );
+               $cookies = \App\Helpers\CookieHelper::create(
+                    $accessToken,
+                    $refreshToken,
+                    15,
+                    60 * 24 * 7
+               );
 
-            DB::commit();
+               DB::commit();
 
-            return $user->toResource(UserResource::class)
-                ->additional(['token' => $accessToken])
-                ->response()
-                ->withCookie($cookies['token'])
-                ->withCookie($cookies['refreshToken']);
-        } catch (\Exception $e) {
-            Log::error("GoogleOAuth2 Error: {$e->getMessage()}");
-            DB::rollBack();
-            return response()->json([
-                'error' => $e->getMessage(),
-            ], 500);
-        }
-    }
+               return $user->toResource(UserResource::class)
+                    ->additional(['token' => $accessToken])
+                    ->response()
+                    ->withCookie($cookies['token'])
+                    ->withCookie($cookies['refreshToken']);
+          } catch (\Exception $e) {
+               Log::error("GoogleOAuth2 Error: {$e->getMessage()}");
+               DB::rollBack();
+               return response()->json([
+                    'error' => $e->getMessage(),
+               ], 500);
+          }
+     }
 
-    protected function generateUsernameFromName(string $name): string
-    {
-        $username = Str::of($name)->ascii()->lower()->__toString();
-        $username = preg_replace('/\s+/', '_', $username);
-        $username = preg_replace('/[^a-z0-9._]/', '', $username);
-        if (!preg_match('/^[a-z]/', $username)) {
-            $username = "u{$username}";
-        }
+     protected function generateUsernameFromName(string $name): string
+     {
+          $username = Str::of($name)->ascii()->lower()->__toString();
+          $username = preg_replace('/\s+/', '_', $username);
+          $username = preg_replace('/[^a-z0-9._]/', '', $username);
+          if (!preg_match('/^[a-z]/', $username)) {
+               $username = "u{$username}";
+          }
 
-        return $username;
-    }
+          return $username;
+     }
 
-    protected function generateUniqueUsername(string $base): string
-    {
-        $username = $base;
-        $counter = 1;
+     protected function generateUniqueUsername(string $base): string
+     {
+          $username = $base;
+          $counter = 1;
 
-        while ($this->userService->getByUsername($username)) {
-            $username = "{$base}{$counter}";
-            $counter++;
-        }
+          while ($this->userService->getByUsername($username)) {
+               $username = "{$base}{$counter}";
+               $counter++;
+          }
 
-        return $username;
-    }
+          return $username;
+     }
 }

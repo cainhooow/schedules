@@ -10,54 +10,54 @@ use Symfony\Component\HttpFoundation\Response;
 
 class UserOwnsResource
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     */
-    public function handle(
-        Request $request,
-        Closure $next,
-        string $serviceClass,
-        string $routeParam,
-        string $ownerField = "user_id"
-    ): Response {
-        $service = "\\App\\Services\\$serviceClass";
-        if (!class_exists($service)) {
-            return response()->json([
-                'message' => "O service responsável por [{$serviceClass}] não foi encontrada"
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
+     /**
+      * Handle an incoming request.
+      *
+      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+      */
+     public function handle(
+          Request $request,
+          Closure $next,
+          string $serviceClass,
+          string $routeParam,
+          string $ownerField = "user_id"
+     ): Response {
+          $service = "\\App\\Services\\$serviceClass";
+          if (!class_exists($service)) {
+               return response()->json([
+                    'message' => "O service responsável por [{$serviceClass}] não foi encontrada"
+               ], Response::HTTP_INTERNAL_SERVER_ERROR);
+          }
 
-        $id = request()->route($routeParam);
-        if (!$id) {
-            return $next($request);
-        }
+          $id = request()->route($routeParam);
+          if (!$id) {
+               return $next($request);
+          }
 
-        $service = new $service();
-        if (!method_exists($service, "getById")) {
-            return response()->json([
-                'message' => "O serviço [{$serviceClass}] não implementa getById()"
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
+          $service = new $service();
+          if (!method_exists($service, "getById")) {
+               return response()->json([
+                    'message' => "O serviço [{$serviceClass}] não implementa getById()"
+               ], Response::HTTP_INTERNAL_SERVER_ERROR);
+          }
 
-        $model = $service->getById($id);
-        if (!$model) {
-            return response()->json([
-                'message' => "Recurso não encontrado"
-            ], Response::HTTP_NOT_FOUND);
-        }
+          $model = $service->getById($id);
+          if (!$model) {
+               return response()->json([
+                    'message' => "Recurso não encontrado"
+               ], Response::HTTP_NOT_FOUND);
+          }
 
-        $ownerId = data_get($model, $ownerField);
-        if ($ownerId !== Auth::user()->id) {
-            $email = Auth::user()->email;
-            Log::warning("User {$email} attempted to modify a resource that does not belong to him. Successfully blocked!");
-            return response()->json([
-                'message' => "Acesso negado ao recurso solicitado"
-            ], Response::HTTP_FORBIDDEN);
-        }
+          $ownerId = data_get($model, $ownerField);
+          if ($ownerId !== Auth::user()->id) {
+               $email = Auth::user()->email;
+               Log::warning("User {$email} attempted to modify a resource that does not belong to him. Successfully blocked!");
+               return response()->json([
+                    'message' => "Acesso negado ao recurso solicitado"
+               ], Response::HTTP_FORBIDDEN);
+          }
 
-        $request->attributes->add(['authorized_' . $routeParam => $model]);
-        return $next($request);
-    }
+          $request->attributes->add(['authorized_' . $routeParam => $model]);
+          return $next($request);
+     }
 }

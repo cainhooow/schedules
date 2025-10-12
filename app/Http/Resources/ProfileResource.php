@@ -19,19 +19,19 @@ use Illuminate\Http\Resources\Json\JsonResource;
  */
 class ProfileResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
-    public function toArray(Request $request): array
-    {
-        return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'bio' => $this->bio,
-            'phone' => $this->phone,
-            'avatar' => $this->avatar
-        ];
-    }
+     /**
+      * Transform the resource into an array.
+      *
+      * @return array<string, mixed>
+      */
+     public function toArray(Request $request): array
+     {
+          return [
+               'id' => $this->id,
+               'name' => $this->name,
+               'bio' => $this->bio,
+               'phone' => $this->phone,
+               'avatar' => $this->avatar
+          ];
+     }
 }

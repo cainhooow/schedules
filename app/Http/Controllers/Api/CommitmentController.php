@@ -12,20 +12,22 @@ use Illuminate\Support\Facades\Auth;
 
 class CommitmentController extends Controller
 {
-    public function __construct(protected $service = new CommitmentServices(), protected $flagService = new FlagServices()) {}
-    //
-    public function index(Request $request)
-    {
-        $commitments = $this->flagService->userHas(Auth::user(), Flags::ServiceProvider)
-            ? Auth::user()->services->flatMap->commitments
-            : Auth::user()->commitments;
+     public function __construct(protected $service = new CommitmentServices(), protected $flagService = new FlagServices())
+     {
+     }
+     //
+     public function index(Request $request)
+     {
+          $commitments = $this->flagService->userHas(Auth::user(), Flags::ServiceProvider)
+               ? Auth::user()->services->flatMap->commitments
+               : Auth::user()->commitments;
 
-        return CommitmentResource::collection($commitments);
-    }
+          return CommitmentResource::collection($commitments);
+     }
 
-    public function show(int $commitmentId)
-    {
-        $commitment = $this->service->getById($commitmentId);
-        return new CommitmentResource($commitment);
-    }
+     public function show(int $commitmentId)
+     {
+          $commitment = $this->service->getById($commitmentId);
+          return new CommitmentResource($commitment);
+     }
 }
