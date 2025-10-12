@@ -6,12 +6,15 @@ use App\Constants\Flags;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AccountRequest;
 use App\Http\Requests\ForgotPasswdRequest;
+use App\Http\Requests\ResetPasswdRequest;
 use App\Services\FlagServices;
 use App\Services\UserServices;
 use Exception;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -84,29 +87,93 @@ class AccountController extends Controller
             return response()->json(['error' => true, 'message' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
-
+    /**
+     * @OA\Post(
+     *   path="/api/v1/auth/forgot-password",
+     *   tags={"Conta"},
+     *   summary="Solicitar um token de reset de senha",
+     *   @OA\RequestBody(
+     *     required=true,
+     *     @OA\JsonContent(
+     *       type="string",
+     *       required={"name"},
+     *       @OA\Property(property="name", type="string")
+     *     )
+     *   ),
+     *   @OA\Response(
+     *     response=200,
+     *     description="OK",
+     *     @OA\JsonContent(ref="#/components/schemas/Resource")
+     *   )
+     * )
+     * @param \App\Http\Requests\ForgotPasswdRequest $request
+     * @return array{message: string, success: bool}
+     */
     public function forgotPassword(ForgotPasswdRequest $request)
     {
         $data = $request->validated();
         $status = Password::sendResetLink($data);
 
         if ($status == Password::RESET_LINK_SENT) {
+            Log::info("Password reset link sent successfull");
             return [
                 'success' => true,
                 'message' => 'Enviamos um e-mail para o informado, verifique sua caixa de entrada'
             ];
         }
 
+        Log::warning("Failed to send password reset token with status {$status}");
         throw ValidationException::withMessages([
             'email' => [trans($status)]
         ]);
     }
-
-    public function resetPassword()
+    /**
+     * @OA\Post(
+     *   path="/api/v1/auth/reset-password",
+     *   tags={"Conta"},
+     *   summary="Resetar senha com o token",
+     *   @OA\RequestBody(
+     *     required=true,
+     *     @OA\JsonContent(
+     *       type="string",
+     *       required={"name"},
+     *       @OA\Property(property="name", type="string")
+     *     )
+     *   ),
+     *   @OA\Response(
+     *     response=200,
+     *     description="OK",
+     *     @OA\JsonContent(ref="#/components/schemas/Resource")
+     *   )
+     * )
+     * @param \App\Http\Requests\ResetPasswdRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function resetPassword(ResetPasswdRequest $request)
     {
+        $data = $request->validated();
+
+        $status = Password::reset($data, function ($user, $password) {
+            $user->forceFill([
+                'password' => Hash::make($password)
+            ])->setRememberToken(Str::random(60));
+
+            $user->save();
+        });
+
+        if ($status !== Password::PASSWORD_RESET) {
+            Log::warning("User password reset failed. Reset status: {$status}");
+            return response()->json([
+                'error' => true,
+                'message' => 'Ocorreu um erro ao tentar resetar a sua senha.',
+                'status' => __($status)
+            ]);
+        }
+
+        Log::info("User password reset successfull");
         return response()->json([
             'success' => true,
-            'message' => 'x'
-        ]);
+            'message' => 'Senha alterada com sucesso!'
+        ], Response::HTTP_OK);
     }
 }
