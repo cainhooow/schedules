@@ -9,25 +9,25 @@ use Illuminate\Foundation\Configuration\Middleware;
 use Sentry\Laravel\Integration;
 
 return Application::configure(basePath: dirname(__DIR__))
-    ->withRouting(
-        web: __DIR__ . '/../routes/web.php',
-        api: __DIR__ . '/../routes/api.php',
-        commands: __DIR__ . '/../routes/console.php',
-        health: '/up',
-    )
-    ->withMiddleware(function (Middleware $middleware): void {
-        //
-        $middleware->alias([
-            'flags' => EnsureUserHasFlags::class,
-            'owns.service' => UserOwnsResource::class
-        ]);
-    })
-    ->withExceptions(function (Exceptions $exceptions): void {
-        $exceptions->render(function (AuthorizationException $e, $request) {
-            return response()->json([
-                'message' => 'Você não tem permissão para acessar este recurso'
-            ], 403);
-        });
+     ->withRouting(
+          web: __DIR__ . '/../routes/web.php',
+          api: __DIR__ . '/../routes/api.php',
+          commands: __DIR__ . '/../routes/console.php',
+          health: '/up',
+     )
+     ->withMiddleware(function (Middleware $middleware): void {
+          //
+          $middleware->alias([
+               'flags' => EnsureUserHasFlags::class,
+               'owns.service' => UserOwnsResource::class
+          ]);
+     })
+     ->withExceptions(function (Exceptions $exceptions): void {
+          $exceptions->render(function (AuthorizationException $e, $request) {
+               return response()->json([
+                    'message' => 'Você não tem permissão para acessar este recurso'
+               ], 403);
+          });
 
-        Integration::handles($exceptions);
-    })->create();
+          Integration::handles($exceptions);
+     })->create();
