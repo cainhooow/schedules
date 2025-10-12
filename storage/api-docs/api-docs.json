@@ -50,6 +50,20 @@
                 }
             }
         },
+        "/api/v1/me/account/overview/pending-tasks": {
+            "get": {
+                "tags": [
+                    "Conta"
+                ],
+                "summary": "Processo de cadastro incompletas",
+                "operationId": "285e63666255d198ce6900be421af33d",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
         "/api/v1/auth/forgot-password": {
             "post": {
                 "tags": [

@@ -51,6 +51,11 @@ Route::prefix('/v1')->group(function () {
                ])
                     ->name('account.type')
                     ->middleware('flags:AccountTaskLevel1');
+
+               Route::prefix('overview')->group(function () {
+                    Route::get('pending-tasks', [AccountController::class, 'pendingAccountTasks'])
+                         ->name('account.pending-tasks');
+               });
           });
 
           Route::resource('profile', ProfileController::class, [

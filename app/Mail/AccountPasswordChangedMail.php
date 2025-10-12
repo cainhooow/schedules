@@ -10,7 +10,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class AccountCreated extends Mailable
+class AccountPasswordChangedMail extends Mailable
 {
      use Queueable, SerializesModels;
 
@@ -28,7 +28,7 @@ class AccountCreated extends Mailable
      public function envelope(): Envelope
      {
           return new Envelope(
-               subject: 'Conta criada com sucesso',
+               subject: 'Sua senha foi alterada com sucesso',
           );
      }
 
@@ -38,7 +38,7 @@ class AccountCreated extends Mailable
      public function content(): Content
      {
           return new Content(
-               view: 'mail.account.created'
+               view: 'mail.account.password-changed',
           );
      }
 

@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Constants\Flags;
-use App\Mail\AccountCreated;
+use App\Mail\AccountCreatedMail;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use Hash;
@@ -42,7 +42,7 @@ class UserServices
                Flags::AccountTaskLevel1
           ]);
 
-          Mail::to($data['email'])->send(new AccountCreated($user));
+          Mail::to($data['email'])->send(new AccountCreatedMail($user));
           return $user;
      }
 }
