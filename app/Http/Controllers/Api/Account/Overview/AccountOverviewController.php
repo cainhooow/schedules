@@ -37,8 +37,8 @@ class AccountOverviewController
      public function eventsCalendar()
      {
           $user = Auth::user();
-          return response()->json([
+          return response()->json(
                $this->accountStatsService->getSchedulesCalendar($user->id)
-          ]);
+          );
      }
 }

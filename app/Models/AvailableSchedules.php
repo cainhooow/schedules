@@ -20,6 +20,10 @@ class AvailableSchedules extends Model
           'service_id'
      ];
 
+     public function commitments() {
+          return $this->hasMany(Commitment::class);
+     }
+
      public function service()
      {
           return $this->belongsTo(Service::class);

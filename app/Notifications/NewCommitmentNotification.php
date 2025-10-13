@@ -10,7 +10,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class NewCommitment extends Notification
+class NewCommitmentNotification extends Notification
 {
      use Queueable;
      /**
@@ -74,10 +74,10 @@ class NewCommitment extends Notification
      public function toArray(object $notifiable): array
      {
           return [
-               'commitment' => $this->commitment,
-               'schedule' => $this->commitment->schedule,
-               'provider' => $this->serviceProvider->profile,
-               'contractor' => $this->contractor->profile,
+               'commitment' => $this->commitment->id,
+               'schedule' => $this->commitment->schedule->id,
+               'provider' => $this->serviceProvider->profile->id,
+               'contractor' => $this->contractor->profile->id,
           ];
      }
 }

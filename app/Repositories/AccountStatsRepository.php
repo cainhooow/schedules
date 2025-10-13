@@ -31,29 +31,31 @@ class AccountStatsRepository implements AccountStatsRepositoryInterface
 
      public function getSchedulesCalendar(int $user_id)
      {
-          $service = Service::with(['schedules', 'commitments.customer'])->where('user_id', $user_id)->get();
+          $services = Service::with(['schedules', 'commitments.customer'])->where('user_id', $user_id)->get();
 
-          foreach ($service->commitments as $commitment) {
-               $schedule = $commitment->schedule;
-               if (!$schedule)
-                    continue;
+          foreach ($services as $service) {
+               foreach ($service->commitments as $commitment) {
+                    $schedule = $commitment->schedule;
+                    if (!$schedule)
+                         continue;
 
-               $start = Carbon::parse($schedule->start_time);
-               $end = Carbon::parse($schedule->end_time);
+                    $start = Carbon::parse($schedule->start_time);
+                    $end = Carbon::parse($schedule->end_time);
 
-               $calendar[] = [
-                    'event' => [
-                         'type' => 'commitment',
-                         'title' => $service->name,
-                         'customer' => $commitment->costumer?->name,
-                         'service_id' => $service->id,
-                         'schedule_id' => $schedule->id,
-                         'comment' => $commitment->comment,
-                         'status' => $commitment->status,
-                    ],
-                    'event_date' => $start->toIso8601String(),
-                    'event_end' => $end->toIso8601String(),
-               ];
+                    $calendar[] = [
+                         'event' => [
+                              'type' => 'commitment',
+                              'title' => $service->name,
+                              'customer' => $commitment->customer->profile->name,
+                              'service_id' => $service->id,
+                              'schedule_id' => $schedule->id,
+                              'comment' => $commitment->comment,
+                              'status' => $commitment->status,
+                         ],
+                         'event_date' => $start->toIso8601String(),
+                         'event_end' => $end->toIso8601String(),
+                    ];
+               }
           }
 
           usort(

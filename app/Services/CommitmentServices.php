@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Exceptions\InvalidScheduleException;
-use App\Notifications\NewCommitment;
+use App\Notifications\NewCommitmentNotification;
 use App\Repositories\CommitmentRepository;
 use Illuminate\Support\Facades\DB;
 use Log;
@@ -57,7 +57,7 @@ class CommitmentServices
                $this->scheduleServices->setAvailabe($schedule->id, false);
                $commitment = $this->repository->store($data);
 
-               $customer->notifyNow(new NewCommitment(
+               $customer->notifyNow(new NewCommitmentNotification(
                     'client',
                     $customer,
                     $service->user,
@@ -66,7 +66,7 @@ class CommitmentServices
 
                Log::debug(json_encode($customer));
 
-               $service->user->notifyNow(new NewCommitment(
+               $service->user->notifyNow(new NewCommitmentNotification(
                     'provider',
                     $customer,
                     $service->user,
