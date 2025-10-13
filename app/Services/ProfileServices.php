@@ -3,9 +3,11 @@
 namespace App\Services;
 
 use App\Constants\Flags;
+use App\Mail\AccountCreatedMail;
 use App\Repositories\ProfileRepository;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Mail;
 
 class ProfileServices
 {
@@ -26,6 +28,7 @@ class ProfileServices
                $this->service->assignToUser($data->user, [Flags::AccountTaskLevel3]);
                $this->service->removeFromUser($data->user, [Flags::AccountTaskLevel2]);
 
+               Mail::to($data->user->email)->send(new AccountCreatedMail($data->user));
                DB::commit();
                return $data;
           } catch (Exception $e) {

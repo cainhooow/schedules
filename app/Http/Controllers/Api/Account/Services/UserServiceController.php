@@ -37,6 +37,7 @@ class UserServiceController extends Controller
      {
           return ServiceResource::collection(Auth::user()->services);
      }
+
      /**
       * @OA\Get(
       *   path="/api/v1/me/services/{serviceId}",
@@ -59,6 +60,7 @@ class UserServiceController extends Controller
      {
           return new ServiceResource($this->service->getById($serviceId));
      }
+
      /**
       * @OA\Post(
       *   path="/api/v1/me/services",
@@ -83,6 +85,7 @@ class UserServiceController extends Controller
 
           return new ServiceResource($createdService);
      }
+
      /**
       * @OA\Put(
       *   path="/api/v1/me/services/{serviceId}",
@@ -131,6 +134,7 @@ class UserServiceController extends Controller
 
           return response(['message' => 'Serviço atualizado com sucesso']);
      }
+
      /**
       * @OA\Delete(
       *   path="/api/v1/me/services/{serviceId}",

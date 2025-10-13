@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Repositories\AccountStatsRepository;
 
-class AccountStatisticsServices
+class AccountStatsServices
 {
      public function __construct(protected $repository = new AccountStatsRepository())
      {
@@ -14,5 +14,9 @@ class AccountStatisticsServices
      public function getPendingAccountTasks(int $user_id): array
      {
           return $this->repository->getPendingAccountTasks($user_id);
+     }
+
+     public function getSchedulesCalendar(int $user_id): array {
+          return $this->repository->getSchedulesCalendar($user_id);
      }
 }

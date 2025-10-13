@@ -41,8 +41,6 @@ class UserServices
                Flags::CanAuthenticate,
                Flags::AccountTaskLevel1
           ]);
-
-          Mail::to($data['email'])->send(new AccountCreatedMail($user));
           return $user;
      }
 }

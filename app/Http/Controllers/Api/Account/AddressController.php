@@ -35,6 +35,7 @@ class AddressController extends Controller
      {
           return AddressResource::collection(Auth::user()->addresses);
      }
+
      /**
       * @OA\Post(
       *   path="/api/v1/me/address/create",
@@ -59,6 +60,7 @@ class AddressController extends Controller
 
           return new AddressResource($createdAddress);
      }
+
      /**
       * @OA\Post(
       *   path="/api/v1/me/address",
@@ -83,6 +85,7 @@ class AddressController extends Controller
 
           return new AddressResource($createdAddress);
      }
+
      /**
       * @OA\Patch(
       *   path="/api/v1/me/address/{addressId}",
@@ -124,6 +127,7 @@ class AddressController extends Controller
                return response()->json(['error' => true, 'message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
           }
      }
+     
      /**
       * @OA\Delete(
       *   path="/api/v1/me/address/{addressId}",

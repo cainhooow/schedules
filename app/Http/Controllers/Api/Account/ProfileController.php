@@ -14,6 +14,7 @@ class ProfileController extends Controller
      public function __construct(protected $service = new ProfileServices())
      {
      }
+
      /**
       * @OA\Get(
       *   path="/api/v1/me/profile",
@@ -30,6 +31,7 @@ class ProfileController extends Controller
      {
           return new ProfileResource(Auth::user()->profile);
      }
+
      /**
       * @OA\Post(
       *   path="/api/v1/me/profile",
@@ -54,6 +56,7 @@ class ProfileController extends Controller
 
           return new ProfileResource($profileCreated);
      }
+
      /**
       * @OA\Put(
       *   path="/api/v1/me/profile",

@@ -1,5 +1,5 @@
 <div>
-     <h1>Olá, sua conta foi criada com sucesso na nossa plataforma!</h1>
+     <h1>Olá {{ $user->profile->name }}, sua conta foi criada com sucesso na nossa plataforma!</h1>
      <p>Você deve seguir com mais alguns passos para completar o seu cadastro:</p>
 
      <ul>

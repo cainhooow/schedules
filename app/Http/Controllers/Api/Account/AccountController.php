@@ -9,7 +9,7 @@ use App\Http\Requests\ForgotPasswdRequest;
 use App\Http\Requests\ResetPasswdRequest;
 use App\Mail\AccountPasswordChangedMail;
 use App\Models\User;
-use App\Services\AccountStatisticsServices;
+use App\Services\AccountStatsServices;
 use App\Services\FlagServices;
 use App\Services\UserServices;
 use Exception;
@@ -27,9 +27,9 @@ class AccountController extends Controller
      public function __construct(
           protected $userService = new UserServices(),
           protected $flagsService = new FlagServices(),
-          protected $accountStatsService = new AccountStatisticsServices(),
      ) {
      }
+
      /**
       * @OA\Post(
       *   path="/api/v1/me/account/type",
@@ -94,25 +94,6 @@ class AccountController extends Controller
                return response()->json(['error' => true, 'message' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
           }
      }
-     /**
-      * @OA\Get(
-      *   path="/api/v1/me/account/overview/pending-tasks",
-      *   tags={"Conta"},
-      *   summary="Processo de cadastro incompletas",
-      *   @OA\Response(
-      *     response=200,
-      *     description="OK"
-      *   )
-      * )
-      * @return \Illuminate\Http\JsonResponse
-      */
-     public function pendingAccountTasks()
-     {
-          $user = Auth::user();
-          return response()->json([
-               'pendings' => $this->accountStatsService->getPendingAccountTasks($user->id)
-          ]);
-     }
 
      /**
       * @OA\Post(
@@ -149,6 +130,7 @@ class AccountController extends Controller
                'email' => [trans($status)]
           ]);
      }
+     
      /**
       * @OA\Post(
       *   path="/api/v1/auth/reset-password",

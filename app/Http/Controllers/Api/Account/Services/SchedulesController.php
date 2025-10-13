@@ -44,6 +44,7 @@ class SchedulesController extends Controller
           $service = request()->attributes->get('authorized_serviceId');
           return SchedulesResource::collection($service->schedules);
      }
+     
      /**
       * @OA\Get(
       *   path="/api/v1/me/services/{serviceId}/schedules/{scheduleId}",
@@ -77,6 +78,7 @@ class SchedulesController extends Controller
           $this->authorize('view', $schedule);
           return new SchedulesResource($schedule);
      }
+
      /**
       * @OA\Post(
       *   path="/api/v1/me/services/{serviceId}/schedules/{scheduleId}",
@@ -117,6 +119,7 @@ class SchedulesController extends Controller
                return response()->json(['error' => true, 'message' => $e->getMessage()]);
           }
      }
+
      /**
       * @OA\Patch(
       *   path="/api/v1/me/services/{serviceId}/schedules/{scheduleId}",
@@ -168,6 +171,7 @@ class SchedulesController extends Controller
                );
           }
      }
+
      /**
       * @OA\Delete(
       *   path="/api/v1/me/services/{serviceId}/schedules/{scheduleId}",

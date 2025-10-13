@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\Account\AccountController;
 use App\Http\Controllers\Api\Account\AddressController;
+use App\Http\Controllers\Api\Account\Overview\AccountOverviewController;
 use App\Http\Controllers\Api\Account\ProfileController;
 use App\Http\Controllers\Api\Account\Services\SchedulesController;
 use App\Http\Controllers\Api\Account\Services\UserServiceController;
@@ -53,8 +54,11 @@ Route::prefix('/v1')->group(function () {
                     ->middleware('flags:AccountTaskLevel1');
 
                Route::prefix('overview')->group(function () {
-                    Route::get('pending-tasks', [AccountController::class, 'pendingAccountTasks'])
-                         ->name('account.pending-tasks');
+                    Route::get('pending-tasks', [AccountOverviewController::class, 'pendingAccountTasks'])
+                         ->name('account.overview.pending-tasks');
+
+                    Route::get('events-calendar', [AccountOverviewController::class, 'eventsCalendar'])
+                         ->name('account.overview.events-calendar');
                });
           });
 
