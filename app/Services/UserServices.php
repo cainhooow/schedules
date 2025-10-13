@@ -3,11 +3,9 @@
 namespace App\Services;
 
 use App\Constants\Flags;
-use App\Mail\AccountCreatedMail;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use Hash;
-use Mail;
 
 class UserServices
 {

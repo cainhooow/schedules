@@ -22,9 +22,9 @@ class NewCommitment extends Notification
       */
      public function __construct(
           public string $messageTo = "client",
-          public User $contractor,
-          public User $serviceProvider,
-          public Commitment $commitment
+          protected User $contractor,
+          protected User $serviceProvider,
+          protected Commitment $commitment
      ) {
      }
 
@@ -49,7 +49,11 @@ class NewCommitment extends Notification
           };
 
           return (new MailMessage)
-               ->view($view);
+               ->view($view, [
+                    'contractor' => $this->contractor,
+                    'serviceProvider' => $this->serviceProvider,
+                    'commitment' => $this->commitment
+               ]);
      }
 
      public function databaseType(object $notifiable): string

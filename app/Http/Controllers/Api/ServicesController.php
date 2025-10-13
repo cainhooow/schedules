@@ -12,6 +12,7 @@ use App\Services\CommitmentServices;
 use App\Services\ServiceServices;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ServicesController extends Controller
 {
@@ -127,7 +128,7 @@ class ServicesController extends Controller
           } catch (InvalidScheduleException $e) {
                return response()->json([
                     'error' => $e->getMessage()
-               ]);
+               ], Response::HTTP_INTERNAL_SERVER_ERROR);
           }
      }
 }

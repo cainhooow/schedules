@@ -5,6 +5,8 @@ namespace App\Services;
 use App\Exceptions\InvalidScheduleException;
 use App\Notifications\NewCommitment;
 use App\Repositories\CommitmentRepository;
+use Illuminate\Support\Facades\DB;
+use Log;
 
 class CommitmentServices
 {
@@ -50,23 +52,33 @@ class CommitmentServices
                throw new InvalidScheduleException("Este horario não esta disponivel para agendamento");
           }
 
-          $this->scheduleServices->setAvailabe($schedule->id, false);
-          $commitment = $this->repository->store($data);
+          DB::beginTransaction();
+          try {
+               $this->scheduleServices->setAvailabe($schedule->id, false);
+               $commitment = $this->repository->store($data);
 
-          $customer->notifyNow(new NewCommitment(
-               'client',
-               $customer,
-               $service->user,
-               $commitment
-          ));
+               $customer->notifyNow(new NewCommitment(
+                    'client',
+                    $customer,
+                    $service->user,
+                    $commitment
+               ));
 
-          $service->user->notifyNow(new NewCommitment(
-               'provider',
-               $customer,
-               $service->user,
-               $commitment
-          ));
+               Log::debug(json_encode($customer));
 
-          return $commitment;
+               $service->user->notifyNow(new NewCommitment(
+                    'provider',
+                    $customer,
+                    $service->user,
+                    $commitment
+               ));
+
+               DB::commit();
+               return $commitment;
+          } catch (\Exception $e) {
+               DB::rollBack();
+               Log::error('' . $e->getMessage());
+               throw new InvalidScheduleException($e->getMessage());
+          }
      }
 }
