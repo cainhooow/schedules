@@ -65,24 +65,30 @@ class AccountController extends Controller
                return response()->json(['message' => 'Você já definiu todos os passos.'], Response::HTTP_UNAUTHORIZED);
           }
 
+          $assignProfileCreate = true;
+
+          if ($this->flagsService->userHas($user, Flags::AccountTaskLevel3)) {
+               $assignProfileCreate = false;
+          }
+
           try {
                $flagsType = match ($type) {
                     'CUSTOMER' => [
                          Flags::Customer,
                          Flags::CanContractServices,
-                         Flags::AccountTaskLevel2
+                         $assignProfileCreate ? Flags::AccountTaskLevel2 : ''
                     ],
                     'SERVICE' => [
                          Flags::ServiceProvider,
                          Flags::CanCreateServices,
                          Flags::CanUpdateServices,
-                         Flags::AccountTaskLevel2
+                         $assignProfileCreate ? Flags::AccountTaskLevel2 : ''
                     ],
                     'ENTERPRISE' => [
                          Flags::Enterprise,
                          Flags::CanCreateServices,
                          Flags::CanUpdateServices,
-                         Flags::AccountTaskLevel2
+                         $assignProfileCreate ? Flags::AccountTaskLevel2 : ''
                     ],
                };
 
@@ -130,7 +136,7 @@ class AccountController extends Controller
                'email' => [trans($status)]
           ]);
      }
-     
+
      /**
       * @OA\Post(
       *   path="/api/v1/auth/reset-password",
