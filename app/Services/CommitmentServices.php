@@ -59,6 +59,11 @@ class CommitmentServices
           }
 
           $scheduleFor = Carbon::parse($data['schedule_for']);
+
+          if ($scheduleFor->isBefore(Carbon::today())) {
+               throw new InvalidScheduleException('Não é possivel agendar para uma data anterior a de hoje.');
+          }
+
           $dayOfWeek = strtolower($schedule->day_of_week);
           $dateDay = strtolower($scheduleFor->format('l'));
 
