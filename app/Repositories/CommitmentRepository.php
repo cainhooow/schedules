@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Interfaces\CommitmentRepositoryInterface;
 use App\Models\Commitment;
+use Illuminate\Database\Eloquent\Builder;
 
 class CommitmentRepository implements CommitmentRepositoryInterface
 {
@@ -22,6 +23,11 @@ class CommitmentRepository implements CommitmentRepositoryInterface
      public function getById(int $id)
      {
           return $this->model->find($id);
+     }
+
+     public function getByScheduleIdWhereDate(int $schedule_id, string $date): Builder|Commitment
+     {
+          return $this->model->where(['schedule_id' => $schedule_id])->whereDate(['schedule_for' => $date]);
      }
 
      public function getAllByServiceId(int $serviceId)

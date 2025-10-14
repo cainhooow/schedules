@@ -22,6 +22,7 @@ class ServicesController extends Controller
           protected $commitmentServices = new CommitmentServices()
      ) {
      }
+     
      /**
       * @OA\Get(
       *   path="/api/v1/services",
@@ -41,6 +42,7 @@ class ServicesController extends Controller
      {
           return ServiceResource::collection($this->service->index());
      }
+
      /**
       * @OA\Get(
       *   path="/api/v1/services/{serviceId}",
@@ -64,6 +66,7 @@ class ServicesController extends Controller
      {
           return new ServiceResource($this->service->getById($serviceId));
      }
+
      /**
       * @OA\Get(
       *   path="/api/v1/services/{serviceId}/schedules",
@@ -86,6 +89,7 @@ class ServicesController extends Controller
      {
           return SchedulesResource::collection($this->service->getById($serviceId)->schedules);
      }
+
      /**
       * @OA\Post(
       *   path="/api/v1/services/{serviceId}/{scheduleId}",

@@ -8,6 +8,8 @@ interface CommitmentRepositoryInterface
 
      public function getById(int $id);
 
+     public function getByScheduleIdWhereDate(int $schedule_id, string $date);
+
      public function getAllByServiceId(int $serviceId);
 
      public function getAllByCustomerId(int $customerId);

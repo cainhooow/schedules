@@ -3,8 +3,10 @@
 namespace App\Services;
 
 use App\Exceptions\InvalidScheduleException;
+use App\Models\AvailableSchedules;
 use App\Notifications\NewCommitmentNotification;
 use App\Repositories\CommitmentRepository;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Log;
 
@@ -52,10 +54,31 @@ class CommitmentServices
                throw new InvalidScheduleException("Este horario não esta disponivel para agendamento");
           }
 
+          if (empty($data['schedule_for'])) {
+               throw new InvalidScheduleException('A data do agendamento (schedule_for) é obrigatória');
+          }
+
+          $scheduleFor = Carbon::parse($data['schedule_for']);
+          $dayOfWeek = strtolower($schedule->day_of_week);
+          $dateDay = strtolower($scheduleFor->format('l'));
+
+          if ($this->repository->getByScheduleIdWhereDate($schedule->id, $scheduleFor)->exists()) {
+               throw new InvalidScheduleException('Já existe um compromisso marcado para este horário');
+          }
+
+          if ($dayOfWeek !== $dateDay) {
+               throw new InvalidScheduleException(
+                    "A data escolhida ({$dateDay}) não corresponde ao dia configurado no horario ({$dayOfWeek})."
+               );
+          }
+
           DB::beginTransaction();
           try {
                $this->scheduleServices->setAvailabe($schedule->id, false);
-               $commitment = $this->repository->store($data);
+               $commitment = $this->repository->store([
+                    ...$data,
+                    'schedule_for' => $scheduleFor
+               ]);
 
                $customer->notifyNow(new NewCommitmentNotification(
                     'client',

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CommitmentRequest extends FormRequest
@@ -13,7 +14,6 @@ class CommitmentRequest extends FormRequest
      {
           return true;
      }
-
      /**
       * Get the validation rules that apply to the request.
       *
@@ -22,7 +22,8 @@ class CommitmentRequest extends FormRequest
      public function rules(): array
      {
           return [
-               'comment' => 'string|max:1500|nullable'
+               'comment' => 'string|max:1500|nullable',
+               'schedule_for' => 'required|date',
           ];
      }
 }

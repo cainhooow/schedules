@@ -31,7 +31,15 @@ class AccountOverviewController
      }
 
      /**
-      * Summary of eventsCalendar
+      * @OA\Get(
+      *   path="/api/v1/me/account/overview/events-calendar",
+      *   tags={"Conta", "Calendario"},
+      *   summary="Retorna uma estrutura para montar calendarios de eventos",
+      *   @OA\Response(
+      *     response=200,
+      *     description="OK"
+      *   )
+      * )
       * @return \Illuminate\Http\JsonResponse
       */
      public function eventsCalendar()

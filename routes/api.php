@@ -28,9 +28,6 @@ Route::get(
 );
 
 Route::prefix('/v1')->group(function () {
-     // Route::get("me", [AuthController::class, 'user'])->name('user.me')
-     //     ->middleware([JwtAuthenticate::class]);
-
      Route::prefix('/auth')->group(function () {
           Route::post('login', [AuthController::class, 'login'])->name('auth.login');
           Route::post('register', [AuthController::class, 'register'])->name('auth.register');

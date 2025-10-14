@@ -14,6 +14,7 @@ class Commitment extends Model
      protected $fillable = [
           'comment',
           'status',
+          'schedule_for',
           'customer_id',
           'service_id',
           'schedule_id',
