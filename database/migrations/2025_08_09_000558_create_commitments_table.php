@@ -16,7 +16,7 @@ return new class extends Migration {
           Schema::create('commitments', function (Blueprint $table) {
                $table->unsignedBigInteger('id')->primary();
                $table->longText('comment')->nullable();
-               $table->date('schedule_for');
+               $table->datetimeTz('schedule_for');
                $table->enum('status', [
                     'scheduled',
                     'closed',

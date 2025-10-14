@@ -27,7 +27,7 @@ class CommitmentRepository implements CommitmentRepositoryInterface
 
      public function getByScheduleIdWhereDate(int $schedule_id, string $date): Builder|Commitment
      {
-          return $this->model->where(['schedule_id' => $schedule_id])->whereDate(['schedule_for' => $date]);
+          return $this->model->where(['schedule_id' => $schedule_id])->whereDate('schedule_for', $date);
      }
 
      public function getAllByServiceId(int $serviceId)

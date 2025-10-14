@@ -22,7 +22,7 @@ class ServicesController extends Controller
           protected $commitmentServices = new CommitmentServices()
      ) {
      }
-     
+
      /**
       * @OA\Get(
       *   path="/api/v1/services",
@@ -132,7 +132,7 @@ class ServicesController extends Controller
           } catch (InvalidScheduleException $e) {
                return response()->json([
                     'error' => $e->getMessage()
-               ], Response::HTTP_INTERNAL_SERVER_ERROR);
+               ], Response::HTTP_BAD_REQUEST);
           }
      }
 }

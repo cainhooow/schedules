@@ -26,7 +26,6 @@ class AddressServices
 
      public function create(array $data)
      {
-          // para o processo de criação da conta, o primeiro endereço é padrão.
           $data['default'] = true;
 
           DB::beginTransaction();

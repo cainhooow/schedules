@@ -31,7 +31,8 @@ class AccountStatsRepository implements AccountStatsRepositoryInterface
 
      public function getSchedulesCalendar(int $user_id)
      {
-          $services = Service::with(['schedules', 'commitments.customer'])->where('user_id', $user_id)->get();
+          $services = Service::with(['schedules', 'commitments.customer'])->where('user_id', $user_id)
+               ->get();
 
           foreach ($services as $service) {
                foreach ($service->commitments as $commitment) {

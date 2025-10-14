@@ -64,17 +64,32 @@ class CommitmentServices
                throw new InvalidScheduleException('Não é possivel agendar para uma data anterior a de hoje.');
           }
 
-          $dayOfWeek = strtolower($schedule->day_of_week);
-          $dateDay = strtolower($scheduleFor->format('l'));
+          $daysMap = [
+               0 => 'sunday',
+               1 => 'monday',
+               2 => 'tuesday',
+               3 => 'wednesday',
+               4 => 'thursday',
+               5 => 'friday',
+               6 => 'saturday'
+          ];
+
+          $dayOfWeekString = $daysMap[$scheduleFor->dayOfWeek];
 
           if ($this->repository->getByScheduleIdWhereDate($schedule->id, $scheduleFor)->exists()) {
                throw new InvalidScheduleException('Já existe um compromisso marcado para este horário');
           }
 
-          if ($dayOfWeek !== $dateDay) {
+          if ($dayOfWeekString !== $schedule->day_of_week) {
                throw new InvalidScheduleException(
-                    "A data escolhida ({$dateDay}) não corresponde ao dia configurado no horario ({$dayOfWeek})."
+                    "A data escolhida ({$dayOfWeekString}) não corresponde ao dia configurado no horario ({$schedule->day_of_week})."
                );
+          }
+
+          $time = $scheduleFor->format('H:i:s');
+
+          if ($time < $schedule->start_time || $time > $schedule->end_time) {
+               throw new InvalidScheduleException("O horário informado ({$time}) está fora do intervalo permitido ({$schedule->start_time}–{$schedule->end_time}).");
           }
 
           DB::beginTransaction();

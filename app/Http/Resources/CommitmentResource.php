@@ -17,6 +17,7 @@ class CommitmentResource extends JsonResource
           return [
                'id' => $this->id,
                'comment' => $this->comment,
+               'schedule_for' => $this->schedule_for,
                'schedule' => new SchedulesResource($this->schedule),
                'service' => new ServiceResource($this->service),
                'customer' => [
