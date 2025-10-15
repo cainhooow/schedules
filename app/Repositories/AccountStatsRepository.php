@@ -97,7 +97,7 @@ class AccountStatsRepository implements AccountStatsRepositoryInterface
                     'canceled' => $service->commitments->where('status', CommitmentStatus::CANCELED->value)->count(),
                     'closed' => $service->commitments->where('status', CommitmentStatus::CLOSED->value)->count(),
                     'per_month' => DB::table('commitments')
-                         // ->where('service_id', $service->id)
+                         ->where('service_id', $service->id)
                          ->selectRaw('DATE_TRUNC(\'month\', commitments.created_at) as month, COUNT(*) as total')
                          ->groupBy('month')
                          ->orderBy('month')
