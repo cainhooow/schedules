@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Constants\CommitmentStatus;
 use App\Interfaces\AccountStatsRepositoryInterface;
 use App\Models\Service;
 use App\Models\User;
@@ -9,9 +10,18 @@ use Carbon\Carbon;
 
 class AccountStatsRepository implements AccountStatsRepositoryInterface
 {
+     private $userModel;
+     private $servicesModel;
+
+     public function __construct()
+     {
+          $this->userModel = new User();
+          $this->servicesModel = new Service();
+     }
+
      public function getPendingAccountTasks(int $user_id): array
      {
-          $user = User::with("flags")->find($user_id);
+          $user = $this->userModel->find($user_id);
 
           if (!$user) {
                return [];
@@ -31,7 +41,8 @@ class AccountStatsRepository implements AccountStatsRepositoryInterface
 
      public function getSchedulesCalendar(int $user_id)
      {
-          $services = Service::with(['schedules', 'commitments.customer'])->where('user_id', $user_id)
+          $services = $this->servicesModel->with(['schedules', 'commitments.customer'])
+               ->where('user_id', $user_id)
                ->get();
 
           foreach ($services as $service) {
@@ -66,5 +77,29 @@ class AccountStatsRepository implements AccountStatsRepositoryInterface
           );
 
           return $calendar;
+     }
+
+     /**
+      * @param int $user_id
+      */
+     public function getServicesDemands(int $user_id): array
+     {
+          $services = $this->servicesModel
+               ->where('user_id', $user_id)->with(['schedules'])->get();
+
+          $data = [];
+
+          foreach ($services as $service) {
+               $data['commitments'] = [
+                    'total' => $service->commitments->count(),
+                    'scheduled' => $service->commitments->where('status', CommitmentStatus::SCHEDULED->value)->count(),
+                    'canceled' => $service->commitments->where('status', CommitmentStatus::CANCELED->value)->count(),
+                    'closed' => $service->commitments->where('status', CommitmentStatus::CLOSED->value)->count()
+               ];
+
+               $data['total_available_schedules'] = $service->schedules->count();
+          }
+
+          return $data;
      }
 }

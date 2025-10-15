@@ -272,6 +272,21 @@
                 }
             }
         },
+        "/api/v1/me/account/overview/events-calendar": {
+            "get": {
+                "tags": [
+                    "Conta",
+                    "Calendario"
+                ],
+                "summary": "Retorna uma estrutura para montar calendarios de eventos",
+                "operationId": "4fb7614e22c7362c4e181f52da9f684d",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
         "/api/v1/me/profile": {
             "get": {
                 "tags": [
@@ -826,6 +841,34 @@
                                 }
                             }
                         }
+                    }
+                }
+            }
+        },
+        "/api/v1/me/commitments": {
+            "get": {
+                "tags": [
+                    "Agenda"
+                ],
+                "summary": "Compromissos agendados cliente/provedor",
+                "operationId": "c1b4f63464174a8cdc2481c359d81d06",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/v1/me/commitments/{commitmentId}": {
+            "get": {
+                "tags": [
+                    "Agenda"
+                ],
+                "summary": "Informações sobre um compromisso",
+                "operationId": "98a7d5dc91eeb2a0fc106b3c169ac4b3",
+                "responses": {
+                    "200": {
+                        "description": "OK"
                     }
                 }
             }
@@ -1512,6 +1555,10 @@
             "description": "Endereços"
         },
         {
+            "name": "Calendario",
+            "description": "Calendario"
+        },
+        {
             "name": "Perfil de usuário",
             "description": "Perfil de usuário"
         },
@@ -1530,6 +1577,10 @@
         {
             "name": "OAuth2",
             "description": "OAuth2"
+        },
+        {
+            "name": "Agenda",
+            "description": "Agenda"
         },
         {
             "name": "Serviços",

@@ -49,4 +49,22 @@ class AccountOverviewController
                $this->accountStatsService->getSchedulesCalendar($user->id)
           );
      }
+
+     /**
+      * @OA\Get(
+      *   path="/api/v1/me/account/overview/demands",
+      *   tags={"Contas", "Demandas"},
+      *   summary="Mostrar estatisticas gerais sobre as demandas de agendamentos",
+      *   @OA\Response(
+      *     response=200,
+      *     description="OK",
+      *   )
+      * )
+      * @return \Illuminate\Http\JsonResponse
+      */
+     public function servicesDemands()
+     {
+          $user = Auth::user();
+          return response()->json($this->accountStatsService->getServicesDemands($user->id));
+     }
 }

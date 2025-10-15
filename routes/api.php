@@ -28,44 +28,48 @@ Route::get(
 );
 
 Route::prefix('/v1')->group(function () {
-     // ========== AUTH ROUTES V1 ============ \\
+     // ============ AUTH ROUTES V1 ============ \\
      Route::prefix('/auth')->group(function () {
-          // ========= LOCAL PROVIDERS ======== \\
+          // ============ LOCAL PROVIDERS ============ \\
           Route::post('login', [AuthController::class, 'login'])->name('auth.login');
           Route::post('register', [AuthController::class, 'register'])->name('auth.register');
-          // ========== PASSWORD RESET ========= \\
+          // ============ PASSWORD RESET ============ \\
           Route::post('forgot-password', [AccountController::class, 'forgotPassword'])->name('auth.account.forgot-password');
           Route::post('reset-password', [AccountController::class, 'resetPassword'])->name('auth.account.reset-password');
-          // ========== EXTERNAL PROVIDERS ========== \\
+          // ============ EXTERNAL PROVIDERS ============ \\
           Route::get('providers/google', [GoogleOAuthController::class, 'redirect'])->name('oauth.google.redirect');
           Route::get('providers/google/callback', [GoogleOAuthController::class, 'callback'])->name('oauth.google.callback');
 
      });
-     // ========= AUTHENTICATED USER REFERER  ========== \\
+     // ============ AUTHENTICATED USER REFERER  ============ \\
      Route::prefix('me')->middleware([JwtAuthenticate::class])->group(function () {
           Route::get('/', [AuthController::class, 'user']);
-          // ======== ACCOUNT ENDPOINT ========== \\
+          // ============ ACCOUNT ENDPOINT ============ \\
           Route::prefix('/account')->group(function () {
-               // ======== ACCOUNT TYPE ========== \\
+               // ============ ACCOUNT TYPE ============ \\
                Route::post('type', [
                     AccountController::class,
                     'defineType',
                ])
                     ->name('account.type')
                     ->middleware('flags:AccountTaskLevel1');
-               // ======= ACCOUNT OVERVIEW - DASHBOARDS ======== \\
+               // ============ ACCOUNT OVERVIEW - DASHBOARDS ============ \\
                Route::prefix('overview')->group(function () {
-                    // ======== ACCOUNT PENDING TASKS ======== \\
+                    // ============ ACCOUNT PENDING TASKS ============ \\
                     Route::get('pending-tasks', [AccountOverviewController::class, 'pendingAccountTasks'])
                          ->name('account.overview.pending-tasks');
-                    // ======== ACCOUNT EVENTS CALENDAR - COMMITMENTS ======= \\
+                    // ============ ACCOUNT EVENTS CALENDAR - COMMITMENTS ============ \\
                     Route::get('events-calendar', [AccountOverviewController::class, 'eventsCalendar'])
                          ->name('account.overview.events-calendar')
+                         ->middleware('flags:ServiceProvider');
+                    // ============ ACCOUNT DEMANDS - GENERAL ============== \\
+                    Route::get('demands', [AccountOverviewController::class, 'servicesDemands'])
+                         ->name('account.overview.demands')
                          ->middleware('flags:ServiceProvider');
                });
           });
 
-          // ========== USER PROFILE ENDPOINT ========= \\
+          // ============ USER PROFILE ENDPOINT ============ \\
           Route::resource('profile', ProfileController::class, [
                'index',
                'store',
@@ -78,7 +82,7 @@ Route::prefix('/v1')->group(function () {
                          'destroy' => 'me.profile.destroy',
                     ])->middlewareFor(['store'], 'flags:AccountTaskLevel2');
 
-          // =========== USER ADDRESS ENDPOINT ========== \\
+          // ============ USER ADDRESS ENDPOINT ============ \\
           Route::post('/address/create', [AddressController::class, 'create'])
                ->name('me.address.create')
                ->middleware('flags:AccountTaskLevel3');
@@ -96,7 +100,7 @@ Route::prefix('/v1')->group(function () {
                          'destroy' => 'me.address.destroy',
                     ])->parameters(['address' => 'addressId']);
 
-          // ============ USER SERVICES ENDPOINT =========== \\
+          // ============ USER SERVICES ENDPOINT ============ \\
           Route::resource('services', UserServiceController::class)
                ->names([
                     'index' => 'me.services.index',
@@ -114,7 +118,7 @@ Route::prefix('/v1')->group(function () {
                     'flags:CanCreateServices,CanUpdateServices',
                ])
                ->parameters(['services' => 'serviceId']);
-          // ============ USER SERVICES SCHEDULES ENPOINT ========== \\
+          // ============ USER SERVICES SCHEDULES ENPOINT ============= \\
           Route::resource('services.schedules', SchedulesController::class)
                ->names([
                     'index' => 'me.schedules.index',
