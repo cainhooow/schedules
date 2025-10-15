@@ -7,6 +7,7 @@ use App\Interfaces\AccountStatsRepositoryInterface;
 use App\Models\Service;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class AccountStatsRepository implements AccountStatsRepositoryInterface
 {
@@ -94,7 +95,20 @@ class AccountStatsRepository implements AccountStatsRepositoryInterface
                     'total' => $service->commitments->count(),
                     'scheduled' => $service->commitments->where('status', CommitmentStatus::SCHEDULED->value)->count(),
                     'canceled' => $service->commitments->where('status', CommitmentStatus::CANCELED->value)->count(),
-                    'closed' => $service->commitments->where('status', CommitmentStatus::CLOSED->value)->count()
+                    'closed' => $service->commitments->where('status', CommitmentStatus::CLOSED->value)->count(),
+                    'per_month' => DB::table('commitments')
+                         // ->where('service_id', $service->id)
+                         ->selectRaw('DATE_TRUNC(\'month\', commitments.created_at) as month, COUNT(*) as total')
+                         ->groupBy('month')
+                         ->orderBy('month')
+                         ->get()
+                         ->map(
+                              fn($row) =>
+                              [
+                                   'month' => Carbon::parse($row->month)->format('Y-m'),
+                                   'total' => $row->total
+                              ]
+                         )
                ];
 
                $data['total_available_schedules'] = $service->schedules->count();
