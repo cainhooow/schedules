@@ -73,7 +73,8 @@ class AccountStatsRepository implements AccountStatsRepositoryInterface
 
           usort(
                $calendar,
-               fn($a, $b) =>
+               fn($a, $b)
+                =>
                strcmp($a['event_date'], $b['event_date'])
           );
 
