@@ -20,7 +20,7 @@ class AccountStatsServices
           return $this->repository->getSchedulesCalendar($user_id);
      }
 
-     public function getServicesDemands(int $user_id): array {
-          return $this->repository->getServicesDemands($user_id);
+     public function getServiceDemands(int $user_id): array {
+          return $this->repository->getServiceDemands($user_id);
      }
 }

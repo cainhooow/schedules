@@ -12,20 +12,20 @@
         "php": "^8.4",
         "darkaonline/l5-swagger": "^9.0",
         "godruoyi/php-snowflake": "^3.2",
-        "laravel/framework": "12.33.0",
+        "laravel/framework": "12.34.0",
         "laravel/sanctum": "4.2.0",
         "laravel/socialite": "5.23.0",
         "laravel/tinker": "2.10.1",
         "scalar/laravel": "^0.2.0",
-        "sentry/sentry-laravel": "^4.16",
-        "tymon/jwt-auth": "^2.2"
+        "sentry/sentry-laravel": "4.17.0",
+        "tymon/jwt-auth": "2.2.1"
     },
     "require-dev": {
         "fakerphp/faker": "1.24.1",
         "laravel/pail": "1.2.3",
         "laravel/pint": "1.25.1",
         "laravel/sail": "1.46.0",
-        "mockery/mockery": "^1.6",
+        "mockery/mockery": "1.6.12",
         "nunomaduro/collision": "8.8.2",
         "pestphp/pest": "4.1.2",
         "pestphp/pest-plugin-laravel": "4.0.0"

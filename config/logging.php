@@ -132,6 +132,7 @@ return [
                // The minimum logging level at which this handler will be triggered
                // Available levels: debug, info, notice, warning, error, critical, alert, emergency
                'level' => env('LOG_LEVEL', 'info'), // defaults to `debug` if not set
+               'enable_logs' => env('ENABLE_LOGS', false)
           ],
      ],
 

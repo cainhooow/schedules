@@ -60,11 +60,12 @@ class AccountOverviewController
       *     description="OK",
       *   )
       * )
-      * @return \Illuminate\Http\JsonResponse
       */
      public function servicesDemands()
      {
           $user = Auth::user();
-          return response()->json($this->accountStatsService->getServicesDemands($user->id));
+          $data = $this->accountStatsService->getServiceDemands($user->id);
+
+          return response()->json($data);
      }
 }

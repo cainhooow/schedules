@@ -84,7 +84,7 @@ class AccountStatsRepository implements AccountStatsRepositoryInterface
      /**
       * @param int $user_id
       */
-     public function getServicesDemands(int $user_id): array
+     public function getServiceDemands(int $user_id): array
      {
           $services = $this->servicesModel
                ->where('user_id', $user_id)->with(['schedules'])->get();
