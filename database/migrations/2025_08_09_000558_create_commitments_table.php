@@ -18,7 +18,9 @@ return new class extends Migration {
                $table->longText('comment')->nullable();
                $table->datetimeTz('schedule_for');
                $table->enum('status', [
+                    'pending',
                     'scheduled',
+                    'running',
                     'closed',
                     'canceled'
                ])->default('scheduled');

@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Constants\CommitmentStatus;
 use App\Interfaces\CommitmentRepositoryInterface;
 use App\Models\Commitment;
 use Illuminate\Database\Eloquent\Builder;
@@ -23,6 +24,11 @@ class CommitmentRepository implements CommitmentRepositoryInterface
      public function getById(int $id)
      {
           return $this->model->find($id);
+     }
+
+     public function getByStatus(CommitmentStatus $status)
+     {
+          return $this->model->where(['status' => $status->value]);
      }
 
      public function getByScheduleIdWhereDate(int $schedule_id, string $date): Builder|Commitment

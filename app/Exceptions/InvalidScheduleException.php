@@ -4,7 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 
-class InvalidScheduleException extends Exception
+final class InvalidScheduleException extends Exception
 {
      //
 }

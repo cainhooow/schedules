@@ -5,7 +5,7 @@ namespace App\Helpers;
 use App\Constants\JwtSessions;
 use Illuminate\Support\Facades\Cookie;
 
-class CookieHelper
+final class CookieHelper
 {
 
      public static function create(string $token, string $refreshToken, int $tokenTime, int $refreshTokenTime)

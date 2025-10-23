@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
+use App\Constants\CommitmentStatus;
 use App\Exceptions\InvalidScheduleException;
-use App\Models\AvailableSchedules;
 use App\Notifications\NewCommitmentNotification;
 use App\Repositories\CommitmentRepository;
 use Carbon\Carbon;
@@ -28,6 +28,11 @@ class CommitmentServices
      public function getById(int $id)
      {
           return $this->repository->getById($id);
+     }
+
+     public function getByStatus(CommitmentStatus $status)
+     {
+          return $this->repository->getByStatus($status);
      }
 
      public function getAllByCustomerId(int $customerId)
@@ -123,5 +128,10 @@ class CommitmentServices
                Log::error('' . $e->getMessage());
                throw new InvalidScheduleException($e->getMessage());
           }
+     }
+
+     public function update(int $id, array $data)
+     {
+          return $this->repository->update($id, $data);
      }
 }

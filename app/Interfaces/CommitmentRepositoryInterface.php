@@ -2,11 +2,15 @@
 
 namespace App\Interfaces;
 
+use App\Constants\CommitmentStatus;
+
 interface CommitmentRepositoryInterface
 {
      public function index();
 
      public function getById(int $id);
+
+     public function getByStatus(CommitmentStatus $status);
 
      public function getByScheduleIdWhereDate(int $schedule_id, string $date);
 
