@@ -16,6 +16,7 @@
         "laravel/sanctum": "4.2.0",
         "laravel/socialite": "5.23.0",
         "laravel/tinker": "2.10.1",
+        "livewire/livewire": "^3.6",
         "scalar/laravel": "^0.2.0",
         "sentry/sentry-laravel": "4.17.0",
         "tymon/jwt-auth": "2.2.1"
