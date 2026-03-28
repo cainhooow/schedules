@@ -39,7 +39,6 @@ Route::prefix('/v1')->group(function () {
           // ============ EXTERNAL PROVIDERS ============ \\
           Route::get('providers/google', [GoogleOAuthController::class, 'redirect'])->name('oauth.google.redirect');
           Route::get('providers/google/callback', [GoogleOAuthController::class, 'callback'])->name('oauth.google.callback');
-
      });
      // ============ AUTHENTICATED USER REFERER  ============ \\
      Route::prefix('me')->middleware([JwtAuthenticate::class])->group(function () {
@@ -161,4 +160,8 @@ Route::prefix('/v1')->group(function () {
           ->post('/services/{serviceId}/schedule/{scheduleId}', [ServicesController::class, 'toSchedule'])
           ->middleware('flags:CanContractServices')
           ->name('services.schedule');
+
+     Route::middleware([JwtAuthenticate::class])
+          ->patch('/services/{serviceId}/schedule/{scheduleId}', [ServicesController::class, 'updateCommitment'])
+          ->name('services.commitment.update');
 });
